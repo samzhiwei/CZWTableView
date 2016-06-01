@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ShowCell">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vn5-YN-ONY">
+                    <rect key="frame" x="102" y="7" width="46" height="30"/>
+                    <state key="normal" title="Button"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0w6-ga-Lys">
+                    <rect key="frame" x="30" y="11" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Ya-qF-c9j">
+                    <rect key="frame" x="540" y="2" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="8rV-NZ-ofm"/>
+                        <constraint firstAttribute="height" constant="40" id="lm7-9D-kcr"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="vn5-YN-ONY" firstAttribute="leading" secondItem="0w6-ga-Lys" secondAttribute="trailing" constant="30" id="7B3-bW-Ipm"/>
+                <constraint firstItem="0w6-ga-Lys" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="DUv-IQ-t71"/>
+                <constraint firstItem="6Ya-qF-c9j" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="QME-Lg-eY0"/>
+                <constraint firstItem="vn5-YN-ONY" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Tww-fD-zcC"/>
+                <constraint firstItem="0w6-ga-Lys" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="ZRt-5x-AEk"/>
+                <constraint firstAttribute="trailing" secondItem="6Ya-qF-c9j" secondAttribute="trailing" constant="20" id="a37-ji-OAz"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="button" destination="vn5-YN-ONY" id="1FA-fp-5Og"/>
+                <outlet property="image" destination="6Ya-qF-c9j" id="pRY-kE-bsq"/>
+                <outlet property="label" destination="0w6-ga-Lys" id="bxg-cq-H45"/>
+            </connections>
+            <point key="canvasLocation" x="149" y="161"/>
+        </view>
+    </objects>
+</document>
