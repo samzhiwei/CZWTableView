@@ -15,12 +15,8 @@
     // Initialization code
 }
 
-//- (NSString *)cellIdentify{
-//    @throw [NSException exceptionWithName:@"Must override this method"
-//                                   reason:[NSString stringWithFormat:@"Didn't override this method %s in subClass", __FUNCTION__]
-//                                 userInfo:nil];
-//    //return NSStringFromClass([self class]);
-//}
+
+#pragma mark - must override
 
 + (CGFloat)tableView:(UITableView *)tableView rowHeightForObject:(CZWRowObj *)rowObj{
     //根据内容计算高度并返回;
@@ -71,6 +67,14 @@
     //        
     //    }
     //
+}
+#pragma mark - cache
++ (CGFloat)tableView:(UITableView *)tableView checkCacheRowHeightForObject:(CZWRowObj *)rowObj{
+    if (rowObj.cellHeight == CellNeedRecountHeight) {
+        CGFloat cellHeight = [rowObj.cellClass tableView:tableView rowHeightForObject:rowObj];
+        rowObj.cellHeight = cellHeight;//缓存
+    }
+    return rowObj.cellHeight;
 }
 
 @end

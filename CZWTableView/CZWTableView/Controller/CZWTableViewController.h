@@ -13,16 +13,8 @@
 #import <UIKit/UIKit.h>
 #import "CZWTableView.h"
 #import "CZWTableViewModel.h"
-@protocol CZWTableViewControllerDelegate <NSObject>
-
-
-/**
- *  数据与cell类型匹配
- */
-- (Class)tableView:(UITableView *)tableView cellClassForObject:(CZWRowObj *)rowObj;
-@end
 @interface CZWTableViewController : UITableViewController
-@property (weak, nonatomic) id<CZWTableViewControllerDelegate> controllerDelegate;
-@property (strong, nonatomic) CZWTableViewModel *model;
-- (instancetype)initWithStyle:(UITableViewStyle)style tableView:(CZWTableView *)tableVIew delegate:(id<CZWTableViewControllerDelegate>)delegate;
+
+//@property (strong, nonatomic) CZWTableViewModel *model;
+- (instancetype)initWithStyle:(UITableViewStyle)style tableView:(CZWTableView *)tableVIew;
 @end

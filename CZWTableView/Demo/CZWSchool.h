@@ -1,13 +1,13 @@
 //
-//  Ban.h
+//  CZWSchool.h
 //  CZWTableView
 //
-//  Created by tianqu on 16/5/30.
+//  Created by tianqu on 16/6/2.
 //  Copyright © 2016年 Tianqu. All rights reserved.
 //
 
 #import "CZWSectionObj.h"
 
-@interface Ban : CZWSectionObj
+@interface CZWSchool : CZWSectionObj
 
 @end

@@ -12,7 +12,6 @@
 /**
  *  必须是二维数组
  */
-
 @property (strong, nonatomic) NSMutableArray<CZWSectionObj *>* dataArray;
 @end
 
@@ -26,8 +25,9 @@
 }
 
 - (void)setDataArray:(NSMutableArray<CZWSectionObj *> *)dataArray{
+    _dataArray = dataArray;
     NSUInteger count = 0;
-    for (CZWSectionObj *secObj in _dataArray) {
+    for (CZWSectionObj *secObj in dataArray) {
         if (secObj) {
             count += secObj.rowArray.count;
         }
@@ -40,7 +40,7 @@
 #pragma mark - 查询
 
 - (CZWSectionObj *)sectionObjectAtIndex:(NSInteger)section{
-    if (self.dataArray && self.dataArray.count > section) {
+    if (self.dataArray.count > section) {
         return self.dataArray[section];
     } else {
         NSLog(@"check model.dataArray:%s",__FUNCTION__);

@@ -20,10 +20,15 @@
 		511D8F251CFEC9B60003828D /* CZWRowObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 511D8F221CFEC9B60003828D /* CZWRowObj.m */; };
 		511D8F261CFEC9B60003828D /* CZWSectionObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 511D8F241CFEC9B60003828D /* CZWSectionObj.m */; };
 		51BC0FA51CFED02100B200D4 /* CZWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FA41CFED02100B200D4 /* CZWTableViewCell.m */; };
-		51BC0FAD1CFED23200B200D4 /* Ban.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FA71CFED23200B200D4 /* Ban.m */; };
-		51BC0FAE1CFED23200B200D4 /* ShowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FA91CFED23200B200D4 /* ShowCell.m */; };
-		51BC0FAF1CFED23200B200D4 /* ShowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51BC0FAA1CFED23200B200D4 /* ShowCell.xib */; };
-		51BC0FB01CFED23200B200D4 /* Student.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FAC1CFED23200B200D4 /* Student.m */; };
+		51BC0FB31D00194D00B200D4 /* CZWSchool.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FB21D00194D00B200D4 /* CZWSchool.m */; };
+		51BC0FB61D00196F00B200D4 /* CZWStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FB51D00196F00B200D4 /* CZWStudent.m */; };
+		51BC0FB81D001AFC00B200D4 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 51BC0FB71D001AFC00B200D4 /* 37x-Checkmark.png */; };
+		51BC0FC71D001C1300B200D4 /* CZWStudentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FC51D001C1300B200D4 /* CZWStudentCell.m */; };
+		51BC0FC81D001C1300B200D4 /* CZWStudentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51BC0FC61D001C1300B200D4 /* CZWStudentCell.xib */; };
+		51BC0FCC1D00200A00B200D4 /* CZWTeatherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FCA1D00200A00B200D4 /* CZWTeatherCell.m */; };
+		51BC0FCD1D00200A00B200D4 /* CZWTeatherCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51BC0FCB1D00200A00B200D4 /* CZWTeatherCell.xib */; };
+		51BC0FD01D0020F400B200D4 /* CZWTeather.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FCF1D0020F400B200D4 /* CZWTeather.m */; };
+		51BC0FD31D00290E00B200D4 /* CZWMapTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FD21D00290E00B200D4 /* CZWMapTableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,13 +55,21 @@
 		511D8F241CFEC9B60003828D /* CZWSectionObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWSectionObj.m; sourceTree = "<group>"; };
 		51BC0FA31CFED02100B200D4 /* CZWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWTableViewCell.h; sourceTree = "<group>"; };
 		51BC0FA41CFED02100B200D4 /* CZWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWTableViewCell.m; sourceTree = "<group>"; };
-		51BC0FA61CFED23200B200D4 /* Ban.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ban.h; sourceTree = "<group>"; };
-		51BC0FA71CFED23200B200D4 /* Ban.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Ban.m; sourceTree = "<group>"; };
-		51BC0FA81CFED23200B200D4 /* ShowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowCell.h; sourceTree = "<group>"; };
-		51BC0FA91CFED23200B200D4 /* ShowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowCell.m; sourceTree = "<group>"; };
-		51BC0FAA1CFED23200B200D4 /* ShowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowCell.xib; sourceTree = "<group>"; };
-		51BC0FAB1CFED23200B200D4 /* Student.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Student.h; sourceTree = "<group>"; };
-		51BC0FAC1CFED23200B200D4 /* Student.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Student.m; sourceTree = "<group>"; };
+		51BC0FB11D00194D00B200D4 /* CZWSchool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWSchool.h; sourceTree = "<group>"; };
+		51BC0FB21D00194D00B200D4 /* CZWSchool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWSchool.m; sourceTree = "<group>"; };
+		51BC0FB41D00196F00B200D4 /* CZWStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWStudent.h; sourceTree = "<group>"; };
+		51BC0FB51D00196F00B200D4 /* CZWStudent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWStudent.m; sourceTree = "<group>"; };
+		51BC0FB71D001AFC00B200D4 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
+		51BC0FC41D001C1300B200D4 /* CZWStudentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWStudentCell.h; sourceTree = "<group>"; };
+		51BC0FC51D001C1300B200D4 /* CZWStudentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWStudentCell.m; sourceTree = "<group>"; };
+		51BC0FC61D001C1300B200D4 /* CZWStudentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CZWStudentCell.xib; sourceTree = "<group>"; };
+		51BC0FC91D00200A00B200D4 /* CZWTeatherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWTeatherCell.h; sourceTree = "<group>"; };
+		51BC0FCA1D00200A00B200D4 /* CZWTeatherCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWTeatherCell.m; sourceTree = "<group>"; };
+		51BC0FCB1D00200A00B200D4 /* CZWTeatherCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CZWTeatherCell.xib; sourceTree = "<group>"; };
+		51BC0FCE1D0020F300B200D4 /* CZWTeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWTeather.h; sourceTree = "<group>"; };
+		51BC0FCF1D0020F400B200D4 /* CZWTeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWTeather.m; sourceTree = "<group>"; };
+		51BC0FD11D00290E00B200D4 /* CZWMapTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWMapTableView.h; sourceTree = "<group>"; };
+		51BC0FD21D00290E00B200D4 /* CZWMapTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWMapTableView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +108,7 @@
 				511D8F181CFEC0800003828D /* main.m */,
 				511D8F1E1CFEC0C80003828D /* AppDelegate.h */,
 				511D8F1F1CFEC0C80003828D /* AppDelegate.m */,
+				51BC0FB71D001AFC00B200D4 /* 37x-Checkmark.png */,
 				511D8EF11CFEBA7A0003828D /* CZWTableView */,
 				511D8EF21CFEBA7A0003828D /* Demo */,
 				511D8ED81CFEB9F90003828D /* Supporting Files */,
@@ -125,13 +139,20 @@
 			children = (
 				511D8EFC1CFEBA7A0003828D /* ViewController.h */,
 				511D8EFD1CFEBA7A0003828D /* ViewController.m */,
-				51BC0FA61CFED23200B200D4 /* Ban.h */,
-				51BC0FA71CFED23200B200D4 /* Ban.m */,
-				51BC0FA81CFED23200B200D4 /* ShowCell.h */,
-				51BC0FA91CFED23200B200D4 /* ShowCell.m */,
-				51BC0FAA1CFED23200B200D4 /* ShowCell.xib */,
-				51BC0FAB1CFED23200B200D4 /* Student.h */,
-				51BC0FAC1CFED23200B200D4 /* Student.m */,
+				51BC0FD11D00290E00B200D4 /* CZWMapTableView.h */,
+				51BC0FD21D00290E00B200D4 /* CZWMapTableView.m */,
+				51BC0FB11D00194D00B200D4 /* CZWSchool.h */,
+				51BC0FB21D00194D00B200D4 /* CZWSchool.m */,
+				51BC0FB41D00196F00B200D4 /* CZWStudent.h */,
+				51BC0FB51D00196F00B200D4 /* CZWStudent.m */,
+				51BC0FC41D001C1300B200D4 /* CZWStudentCell.h */,
+				51BC0FC51D001C1300B200D4 /* CZWStudentCell.m */,
+				51BC0FC61D001C1300B200D4 /* CZWStudentCell.xib */,
+				51BC0FCE1D0020F300B200D4 /* CZWTeather.h */,
+				51BC0FCF1D0020F400B200D4 /* CZWTeather.m */,
+				51BC0FC91D00200A00B200D4 /* CZWTeatherCell.h */,
+				51BC0FCA1D00200A00B200D4 /* CZWTeatherCell.m */,
+				51BC0FCB1D00200A00B200D4 /* CZWTeatherCell.xib */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -150,10 +171,10 @@
 			children = (
 				511D8F0E1CFEBB370003828D /* CZWTableViewModel.h */,
 				511D8F0F1CFEBB370003828D /* CZWTableViewModel.m */,
-				511D8F211CFEC9B60003828D /* CZWRowObj.h */,
-				511D8F221CFEC9B60003828D /* CZWRowObj.m */,
 				511D8F231CFEC9B60003828D /* CZWSectionObj.h */,
 				511D8F241CFEC9B60003828D /* CZWSectionObj.m */,
+				511D8F211CFEC9B60003828D /* CZWRowObj.h */,
+				511D8F221CFEC9B60003828D /* CZWRowObj.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -235,11 +256,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51BC0FAF1CFED23200B200D4 /* ShowCell.xib in Resources */,
 				511D8F1C1CFEC0800003828D /* Info.plist in Resources */,
 				511D8F1B1CFEC0800003828D /* Main.storyboard in Resources */,
 				511D8F191CFEC0800003828D /* Assets.xcassets in Resources */,
 				511D8F1A1CFEC0800003828D /* LaunchScreen.storyboard in Resources */,
+				51BC0FCD1D00200A00B200D4 /* CZWTeatherCell.xib in Resources */,
+				51BC0FC81D001C1300B200D4 /* CZWStudentCell.xib in Resources */,
+				51BC0FB81D001AFC00B200D4 /* 37x-Checkmark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,17 +274,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				511D8F0D1CFEBB100003828D /* CZWTableView.m in Sources */,
+				51BC0FCC1D00200A00B200D4 /* CZWTeatherCell.m in Sources */,
 				511D8F101CFEBB370003828D /* CZWTableViewModel.m in Sources */,
 				511D8F041CFEBA7A0003828D /* ViewController.m in Sources */,
 				511D8F0A1CFEBAEA0003828D /* CZWTableViewController.m in Sources */,
 				51BC0FA51CFED02100B200D4 /* CZWTableViewCell.m in Sources */,
+				51BC0FD01D0020F400B200D4 /* CZWTeather.m in Sources */,
 				511D8F251CFEC9B60003828D /* CZWRowObj.m in Sources */,
 				511D8F1D1CFEC0800003828D /* main.m in Sources */,
 				511D8F261CFEC9B60003828D /* CZWSectionObj.m in Sources */,
+				51BC0FB31D00194D00B200D4 /* CZWSchool.m in Sources */,
+				51BC0FB61D00196F00B200D4 /* CZWStudent.m in Sources */,
+				51BC0FD31D00290E00B200D4 /* CZWMapTableView.m in Sources */,
+				51BC0FC71D001C1300B200D4 /* CZWStudentCell.m in Sources */,
 				511D8F201CFEC0C80003828D /* AppDelegate.m in Sources */,
-				51BC0FAE1CFED23200B200D4 /* ShowCell.m in Sources */,
-				51BC0FAD1CFED23200B200D4 /* Ban.m in Sources */,
-				51BC0FB01CFED23200B200D4 /* Student.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

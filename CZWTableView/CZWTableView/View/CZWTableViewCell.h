@@ -12,8 +12,8 @@
 /**
  *  重写这个方法可以根据rowObj内容来计算高度并返回
  */
-
 + (CGFloat)tableView:(UITableView *)tableView rowHeightForObject:(CZWRowObj *)rowObj;
++ (CGFloat)tableView:(UITableView *)tableView checkCacheRowHeightForObject:(CZWRowObj *)rowObj;
 
 /**
  *  重写这个方法设定数据接入逻辑

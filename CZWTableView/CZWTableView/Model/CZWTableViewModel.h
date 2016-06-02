@@ -5,12 +5,17 @@
 //  Created by tianqu on 16/6/1.
 //  Copyright © 2016年 Tianqu. All rights reserved.
 //
-
+/**
+ *  创建会强引用dataArray
+ */
 #import <Foundation/Foundation.h>
 #import "CZWSectionObj.h"
 #import "CZWRowObj.h"
 @interface CZWTableViewModel : NSObject
 
+/**
+ *  自动计算方便调用
+ */
 @property (assign, nonatomic, readonly) NSUInteger sectionCount;
 @property (assign, nonatomic, readonly) NSUInteger objectCount;
 

@@ -42,6 +42,25 @@
     self.showsHorizontalScrollIndicator = NO;
 }
 
+#pragma mark - Api
+
+- (instancetype)initWithRegisterCellNibParam:(NSDictionary *)param{
+    self = [self init];
+    if (self) {
+        [self registerCellParam:param];
+    }
+    return self;
+}
+
+- (instancetype)initWithRegisterCellNibParam:(NSDictionary *)param delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
+    self = [self init];
+    if (self) {
+        [self registerCellParam:param];
+        [self pastDelegate:delegate dataSource:dataSource];
+    }
+    return self;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame registerCellNibParam:(NSDictionary *)param{
     self = [self initWithFrame:frame];
     if (self) {
@@ -59,6 +78,15 @@
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style registerCellNibParam:(NSDictionary *)param delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
+    self = [self initWithFrame:frame style:style];
+    if (self) {
+        [self registerCellParam:param];
+        [self pastDelegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource];
+    }
+    return self;
+}
+
 - (void)registerCellParam:(NSDictionary *)param{
     if (param.allKeys.count > 0) {
         for (NSString *key in param.allKeys) {
@@ -67,5 +95,11 @@
         }
     }
 }
+
+- (void)pastDelegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
+    self.delegate = delegate;
+    self.dataSource = dataSource;
+}
+
 
 @end
