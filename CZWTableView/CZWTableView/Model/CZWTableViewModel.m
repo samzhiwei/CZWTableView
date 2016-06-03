@@ -7,7 +7,7 @@
 //
 
 #import "CZWTableViewModel.h"
-
+#import <objc/runtime.h>
 @interface CZWTableViewModel ()
 /**
  *  必须是二维数组
@@ -60,5 +60,6 @@
     NSLog(@"check model.dataArray:%s",__FUNCTION__);;
     return nil;
 }
+
 
 @end

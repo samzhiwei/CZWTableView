@@ -7,7 +7,6 @@
 //
 
 #import "CZWRowObj.h"
-#import "CZWTableViewCell.h"
 CGFloat const CellNeedRecountHeight = -1;
 @implementation CZWRowObj
 - (instancetype)init

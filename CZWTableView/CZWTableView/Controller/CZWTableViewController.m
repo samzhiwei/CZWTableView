@@ -14,7 +14,11 @@
 
 @implementation CZWTableViewController
 #pragma mark - must override
-- (CZWTableViewModel *)createModel:(CZWTableView *)tableView{
+/**
+ *  子类必须重写，controller必须自己强持有model和view;
+ *  执行一次后CZWTableView会弱持有自己的model;只有!model 时会重新调用询问
+ */
+- (CZWTableViewModel * __nonnull)createModel:(CZWTableView *)tableView{
     //没有重写就会抛出异常
     @throw [NSException exceptionWithName:@"Must override this method"
                                    reason:[NSString stringWithFormat:@"Didn't override this method %s in subClass", __FUNCTION__]
@@ -23,13 +27,18 @@
     return [[CZWTableViewModel alloc]initWithData:nil];
 }
 
-- (Class)tableView:(CZWTableView *)tableView cellClassForObject:(CZWRowObj *)rowObj{
-    //没有重写就会抛出异常
-    @throw [NSException exceptionWithName:@"Must override this method"
-                                   reason:[NSString stringWithFormat:@"Didn't override this method %s in subClass", __FUNCTION__]
-                                 userInfo:nil];
+/**
+ *  如果不重写这个方法就要按照
+ *   "obj类名后加Cell为Cell的类名" 的命名规则命名
+ */
+- (Class __nonnull)tableView:(CZWTableView *)tableView cellClassForObject:(CZWRowObj *)rowObj{
+    
+    Class rowObjClass = [rowObj class];
+    NSString *rowObjClassStr = NSStringFromClass(rowObjClass);
+    NSString *cellClassStr = [rowObjClassStr stringByAppendingString:@"Cell"];
+    
     //eg.
-    return [self class];
+    return NSClassFromString(cellClassStr);
 }
 
 
@@ -65,7 +74,7 @@
 }
 
 #pragma mark - initialize Api
-//初始化必须要tableView (原因：根据tableView区分model(逻辑由用户写))
+//初始化必须tableView (原因：根据tableView区分model(逻辑由用户写))
 - (instancetype)initWithStyle:(UITableViewStyle)style tableView:(CZWTableView *)tableVIew{
     self = [self initWithStyle:style];
     if (self) {
@@ -101,14 +110,12 @@
 #pragma mark - Cache
 /**
  *  model cache
- *  暂时不缓存:还没想到换乘方案
  */
 - (CZWTableViewModel *)checkModelCache:(CZWTableView *)tableView{
-//    if (!_model) {
-//        _model = [self createModel:tableView];
-//    }
-//    return _model;
-    return [self createModel:tableView];
+    if (!tableView.model) {
+        tableView.model = [self createModel:tableView];
+    }
+    return tableView.model;
 }
 
 /**
@@ -139,9 +146,8 @@
     CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
     Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
     NSString *cellName = [NSString stringWithFormat:@"%s",class_getName(cellClass)];
-    if ([cellClass isSubclassOfClass:[CZWTableViewCell class]]) {
-        CZWTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath];
-        return [cell settingData:rowObj];
+    if ([cellClass conformsToProtocol:@protocol(CZWTableViewCellProtocol)]) {
+        return [[tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath] settingData:rowObj];
     } else {
         NSLog(@"cell Class isn't inherit CZWTableViewCell : %s",__FUNCTION__);
         return nil;
@@ -152,8 +158,20 @@
 
 - (CGFloat)tableView:(CZWTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
-    return [cellClass tableView:tableView checkCacheRowHeightForObject:rowObj];
+    
+    return [self tableView:tableView checkCacheRowHeightForObject:rowObj];
+}
+
+
+
+#pragma mark - cache
+- (CGFloat)tableView:(CZWTableView *)tableView checkCacheRowHeightForObject:(CZWRowObj *)rowObj{
+    if (rowObj.cellHeight == CellNeedRecountHeight) {
+        Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
+        CGFloat cellHeight = [cellClass tableView:tableView rowHeightForObject:rowObj];
+        rowObj.cellHeight = cellHeight;//缓存
+    }
+    return rowObj.cellHeight;
 }
 
 

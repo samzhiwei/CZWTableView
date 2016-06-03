@@ -8,18 +8,18 @@
 /**
  *  创建会强引用dataArray
  */
-#import <Foundation/Foundation.h>
+#import "CZWTableViewProtocol.h"
 #import "CZWSectionObj.h"
 #import "CZWRowObj.h"
-@interface CZWTableViewModel : NSObject
+@interface CZWTableViewModel : NSObject <CZWTableViewModelProtocol>
+
+- (instancetype)initWithData:(NSMutableArray<CZWSectionObj *>*)dataArray;
 
 /**
  *  自动计算方便调用
  */
 @property (assign, nonatomic, readonly) NSUInteger sectionCount;
 @property (assign, nonatomic, readonly) NSUInteger objectCount;
-
-- (instancetype)initWithData:(NSMutableArray<CZWSectionObj *>*)dataArray;
 
 #pragma mark - 查询
 /**
@@ -30,4 +30,5 @@
  *  indexPath查询第二维数组
  */
 - (CZWRowObj *)tableView:(UITableView *)tableView objectForRowAtIndexPath:(NSIndexPath *)indexPath;
+
 @end

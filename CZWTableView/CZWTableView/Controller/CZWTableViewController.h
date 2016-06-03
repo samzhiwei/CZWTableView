@@ -10,11 +10,14 @@
  *  一个controller只对应一个tableView,一个model;
  */
 
-#import <UIKit/UIKit.h>
+#import "CZWTableViewProtocol.h"
+
+
 #import "CZWTableView.h"
 #import "CZWTableViewModel.h"
 @interface CZWTableViewController : UITableViewController
-
-//@property (strong, nonatomic) CZWTableViewModel *model;
+/**
+ *  自动绑定tableView的delegate和dataSource
+ */
 - (instancetype)initWithStyle:(UITableViewStyle)style tableView:(CZWTableView *)tableVIew;
 @end

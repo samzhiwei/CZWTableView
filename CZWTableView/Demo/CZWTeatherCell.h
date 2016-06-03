@@ -6,9 +6,8 @@
 //  Copyright © 2016年 Tianqu. All rights reserved.
 //
 
-#import "CZWTableViewCell.h"
-#import "CZWTeather.h"
-@interface CZWTeatherCell : CZWTableViewCell
+#import "CZWTableViewProtocol.h"
+@interface CZWTeatherCell : UITableViewCell <CZWTableViewCellProtocol>
 @property (weak, nonatomic) IBOutlet UIImageView *image;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 

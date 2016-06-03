@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import "CZWMapTableView.h"
 #import "CZWSchool.h"
+#import "CZWStudent.h"
+#import "CZWTeather.h"
 #import "CZWStudentCell.h"
 #import "CZWTeatherCell.h"
 @interface ViewController ()
@@ -56,17 +58,6 @@
     }
 }
 
-- (Class)tableView:(CZWTableView *)tableView cellClassForObject:(CZWRowObj *)rowObj{
-    if ([rowObj isKindOfClass:[CZWStudent class]]) {
-        return [CZWStudentCell class];
-    } else if ([rowObj isKindOfClass:[CZWTeather class]]){
-        return [CZWTeatherCell class];
-    }else {
-        return NULL;
-    }
-}
-
-
 - (instancetype)init
 {
     self = [super init];
@@ -79,12 +70,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"start");
-    NSString *key = NSStringFromClass([CZWStudentCell class]);
-    UINib *nib = [UINib nibWithNibName:key bundle:nil];
-    NSString *key1 = NSStringFromClass([CZWTeatherCell class]);
-    UINib *nib1 = [UINib nibWithNibName:key1 bundle:nil];
-    NSDictionary *dic = @{key:nib,key1:nib1};
-    self.tableView = [[CZWMapTableView alloc]initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain registerCellNibParam:dic delegate:self dataSource:self];
+    NSArray *array = @[NSStringFromClass([CZWStudentCell class]),NSStringFromClass([CZWTeatherCell class])];
+    self.tableView = [[CZWMapTableView alloc]initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain registerCellNibNames:array delegate:self dataSource:self];
     self.tableView.tag = 1;
 }
 
@@ -95,6 +82,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //CZWTableViewModel *model = self.model;
-
+    self.firstModel = nil;
 }
 @end

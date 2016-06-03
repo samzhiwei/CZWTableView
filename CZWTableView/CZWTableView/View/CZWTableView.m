@@ -36,7 +36,6 @@
 }
 
 - (void)initSetting{
-    self.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.separatorColor = [UIColor clearColor];
     self.showsVerticalScrollIndicator = YES;
     self.showsHorizontalScrollIndicator = NO;
@@ -44,55 +43,77 @@
 
 #pragma mark - Api
 
-- (instancetype)initWithRegisterCellNibParam:(NSDictionary *)param{
+- (instancetype)initWithRegisterCellClasses:(NSArray <Class>*)classes{
     self = [self init];
     if (self) {
-        [self registerCellParam:param];
+        [self registerCellClasses:classes];
     }
     return self;
 }
 
-- (instancetype)initWithRegisterCellNibParam:(NSDictionary *)param delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
+- (instancetype)initWithRegisterCellClasses:(NSArray <Class>*)classes delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
     self = [self init];
     if (self) {
-        [self registerCellParam:param];
+        [self registerCellClasses:classes];
         [self pastDelegate:delegate dataSource:dataSource];
     }
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame registerCellNibParam:(NSDictionary *)param{
+- (instancetype)initWithFrame:(CGRect)frame registerCellClasses:(NSArray <Class>*)classes{
     self = [self initWithFrame:frame];
     if (self) {
-        [self registerCellParam:param];
+        [self registerCellClasses:classes];
     }
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style  registerCellNibParam:(NSDictionary *)param{
+- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style registerCellClasses:(NSArray <Class>*)classes{
     self = [self initWithFrame:frame style:style];
     if (self) {
-        [self registerCellParam:param];
+        [self registerCellClasses:classes];
         
     }
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style registerCellNibParam:(NSDictionary *)param delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
+- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style registerCellClasses:(NSArray <Class>*)classes delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
     self = [self initWithFrame:frame style:style];
     if (self) {
-        [self registerCellParam:param];
+        [self registerCellClasses:classes];
         [self pastDelegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource];
     }
     return self;
 }
 
-- (void)registerCellParam:(NSDictionary *)param{
-    if (param.allKeys.count > 0) {
-        for (NSString *key in param.allKeys) {
-            UINib *nib = [param objectForKey:key];
-            [self registerNib:nib forCellReuseIdentifier:key];
-        }
+- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style registerCellNibName:(NSArray <NSString *>*)nibNames delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
+    self = [self initWithFrame:frame style:style];
+    if (self) {
+        [self registerCellNibs:nibNames];
+        [self pastDelegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style registerCellNibNames:(NSArray <NSString *>*)nibNames delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
+    self = [self initWithFrame:frame style:style];
+    if (self) {
+        [self registerCellNibs:nibNames];
+        [self pastDelegate:delegate dataSource:dataSource];
+    }
+    return self;
+}
+
+- (void)registerCellNibs:(NSArray <NSString *>*)nibNames{
+    for (NSString *nibName in nibNames) {
+        [self registerNib:[UINib nibWithNibName:nibName bundle:nil] forCellReuseIdentifier:nibName];
+    }
+}
+
+- (void)registerCellClasses:(NSArray <Class>*)classes{
+    for (Class cellClass in classes) {
+        NSString *cellClassStr = NSStringFromClass(cellClass);
+        [self registerClass:cellClass forCellReuseIdentifier:cellClassStr];
     }
 }
 

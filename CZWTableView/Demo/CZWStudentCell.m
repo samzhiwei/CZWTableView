@@ -10,15 +10,15 @@
 
 @implementation CZWStudentCell
 
-+ (CGFloat)tableView:(UITableView *)tableView rowHeightForObject:(CZWRowObj *)rowObj{
-    return 44.0;
++ (CGFloat)tableView:(UITableView *)tableView rowHeightForObject:(id)rowObj{
+    return 44;
 }
-
-- (CZWTableViewCell *)settingData:(CZWStudent *)rowObj{
-    _image.image = [UIImage imageNamed:rowObj.imageName];
-    _label.text = rowObj.name;
-    [_button setTitle:[rowObj.age stringValue] forState:UIControlStateNormal];
+//配置好然后返回self
+- (UITableViewCell *)settingData:(id)rowObj{
+    self.label.text = [rowObj valueForKey:@"name"];
+    NSNumber *age = [rowObj valueForKey:@"age"];
+    [self.button setTitle:[age stringValue] forState:UIControlStateNormal];
+    self.image.image = [UIImage imageNamed:[rowObj valueForKey:@"imageName"]];
     return self;
 }
-
 @end

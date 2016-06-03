@@ -19,7 +19,6 @@
 		511D8F201CFEC0C80003828D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 511D8F1F1CFEC0C80003828D /* AppDelegate.m */; };
 		511D8F251CFEC9B60003828D /* CZWRowObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 511D8F221CFEC9B60003828D /* CZWRowObj.m */; };
 		511D8F261CFEC9B60003828D /* CZWSectionObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 511D8F241CFEC9B60003828D /* CZWSectionObj.m */; };
-		51BC0FA51CFED02100B200D4 /* CZWTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FA41CFED02100B200D4 /* CZWTableViewCell.m */; };
 		51BC0FB31D00194D00B200D4 /* CZWSchool.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FB21D00194D00B200D4 /* CZWSchool.m */; };
 		51BC0FB61D00196F00B200D4 /* CZWStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FB51D00196F00B200D4 /* CZWStudent.m */; };
 		51BC0FB81D001AFC00B200D4 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 51BC0FB71D001AFC00B200D4 /* 37x-Checkmark.png */; };
@@ -53,8 +52,6 @@
 		511D8F221CFEC9B60003828D /* CZWRowObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWRowObj.m; sourceTree = "<group>"; };
 		511D8F231CFEC9B60003828D /* CZWSectionObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWSectionObj.h; sourceTree = "<group>"; };
 		511D8F241CFEC9B60003828D /* CZWSectionObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWSectionObj.m; sourceTree = "<group>"; };
-		51BC0FA31CFED02100B200D4 /* CZWTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWTableViewCell.h; sourceTree = "<group>"; };
-		51BC0FA41CFED02100B200D4 /* CZWTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWTableViewCell.m; sourceTree = "<group>"; };
 		51BC0FB11D00194D00B200D4 /* CZWSchool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWSchool.h; sourceTree = "<group>"; };
 		51BC0FB21D00194D00B200D4 /* CZWSchool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWSchool.m; sourceTree = "<group>"; };
 		51BC0FB41D00196F00B200D4 /* CZWStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWStudent.h; sourceTree = "<group>"; };
@@ -70,6 +67,7 @@
 		51BC0FCF1D0020F400B200D4 /* CZWTeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWTeather.m; sourceTree = "<group>"; };
 		51BC0FD11D00290E00B200D4 /* CZWMapTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWMapTableView.h; sourceTree = "<group>"; };
 		51BC0FD21D00290E00B200D4 /* CZWMapTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWMapTableView.m; sourceTree = "<group>"; };
+		51BC0FD51D0125E200B200D4 /* CZWTableViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWTableViewProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +125,7 @@
 		511D8EF11CFEBA7A0003828D /* CZWTableView */ = {
 			isa = PBXGroup;
 			children = (
+				51BC0FD51D0125E200B200D4 /* CZWTableViewProtocol.h */,
 				511D8F051CFEBAC10003828D /* Controller */,
 				511D8F061CFEBAC10003828D /* Model */,
 				511D8F071CFEBAC10003828D /* View */,
@@ -184,8 +183,6 @@
 			children = (
 				511D8F0B1CFEBB100003828D /* CZWTableView.h */,
 				511D8F0C1CFEBB100003828D /* CZWTableView.m */,
-				51BC0FA31CFED02100B200D4 /* CZWTableViewCell.h */,
-				51BC0FA41CFED02100B200D4 /* CZWTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -278,7 +275,6 @@
 				511D8F101CFEBB370003828D /* CZWTableViewModel.m in Sources */,
 				511D8F041CFEBA7A0003828D /* ViewController.m in Sources */,
 				511D8F0A1CFEBAEA0003828D /* CZWTableViewController.m in Sources */,
-				51BC0FA51CFED02100B200D4 /* CZWTableViewCell.m in Sources */,
 				51BC0FD01D0020F400B200D4 /* CZWTeather.m in Sources */,
 				511D8F251CFEC9B60003828D /* CZWRowObj.m in Sources */,
 				511D8F1D1CFEC0800003828D /* main.m in Sources */,

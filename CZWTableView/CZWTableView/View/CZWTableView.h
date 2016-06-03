@@ -13,27 +13,27 @@
  *  3.设置dataSource
  */
 
-#import <UIKit/UIKit.h>
-#import "CZWTableViewCell.h"
+#import "CZWTableViewProtocol.h"
 @interface CZWTableView : UITableView
-
+@property (weak, nonatomic) id <CZWTableViewModelProtocol> model;
 /**
  *  约束创建
  */
-- (instancetype)initWithRegisterCellNibParam:(NSDictionary *)param;
-- (instancetype)initWithRegisterCellNibParam:(NSDictionary *)param delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource;
+- (instancetype)initWithRegisterCellClasses:(NSArray <Class>*)classes delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource;
 
 /**
  *  frame创建
  */
-- (instancetype)initWithFrame:(CGRect)frame registerCellNibParam:(NSDictionary *)param;
-- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style  registerCellNibParam:(NSDictionary *)param;
-- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style registerCellNibParam:(NSDictionary *)param delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource;
+- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style registerCellClasses:(NSArray <Class>*)classes delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource;
+- (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style registerCellNibNames:(NSArray <NSString *>*)nibNames delegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource;
 /**
  *  注册cell
- *  Param : key(cell名) : value:(cell Nib)
+ *  classes:传需要注册的cellClass
  *  默认重用符为cellClass的名字;
  *  后续支持class注册
  */
-- (void)registerCellParam:(NSDictionary *)param;
+
+- (void)registerCellClasses:(NSArray <Class>*)classes;
+- (void)registerCellNibs:(NSArray <NSString *>*)nibNames;
+
 @end

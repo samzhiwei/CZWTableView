@@ -10,14 +10,14 @@
 
 @implementation CZWTeatherCell
 
-+ (CGFloat)tableView:(UITableView *)tableView rowHeightForObject:(CZWRowObj *)rowObj{
-    return 66.0;
++ (CGFloat)tableView:(UITableView *)tableView rowHeightForObject:(id)rowObj{
+    return 66;
 }
-
-- (CZWTableViewCell *)settingData:(CZWTeather *)rowObj{
-    _image.image = [UIImage imageNamed:rowObj.name];
-    _label.text = [rowObj.workNumber stringValue];
+//配置好然后返回self
+- (UITableViewCell *)settingData:(id)rowObj{
+    NSString *name = [rowObj valueForKey:@"name"];
+    self.image.image = [UIImage imageNamed:name];
+    self.label.text = [[rowObj valueForKey:@"workNumber"] stringValue];
     return self;
 }
-
 @end
