@@ -149,7 +149,7 @@
     if ([cellClass conformsToProtocol:@protocol(CZWTableViewCellProtocol)]) {
         return [[tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath] settingData:rowObj];
     } else {
-        NSLog(@"cell Class isn't inherit CZWTableViewCell : %s",__FUNCTION__);
+        NSLog(@"cell Class didn't conforms To Protocol CZWTableViewCellProtocol : %s",__FUNCTION__);
         return nil;
     }
 }
