@@ -15,5 +15,5 @@
 FOUNDATION_EXPORT CGFloat const CellNeedRecountHeight;//高度缓存判断用
 @interface CZWRowObj : NSObject
 @property (assign, nonatomic) Class cellClass;
-@property (nonatomic, assign) CGFloat cellHeight;
+@property (assign, nonatomic) CGFloat cellHeight;
 @end

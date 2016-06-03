@@ -47,6 +47,15 @@
     return _firstModel;
 }
 
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSLog(@"start");
+    NSArray *array = @[NSStringFromClass([CZWStudentCell class]),NSStringFromClass([CZWTeatherCell class])];
+    self.tableView = [[CZWMapTableView alloc]initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain registerCellNibNames:array delegate:self dataSource:self];
+    self.tableView.tag = 1;
+}
+
 - (CZWTableViewModel *)createModel:(CZWTableView *)tableView{
     NSLog(@"%s",__FUNCTION__);
     if (tableView.tag == 1) {
@@ -58,30 +67,8 @@
     }
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-    }
-    return self;
-}
-
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    NSLog(@"start");
-    NSArray *array = @[NSStringFromClass([CZWStudentCell class]),NSStringFromClass([CZWTeatherCell class])];
-    self.tableView = [[CZWMapTableView alloc]initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain registerCellNibNames:array delegate:self dataSource:self];
-    self.tableView.tag = 1;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    //CZWTableViewModel *model = self.model;
-    self.firstModel = nil;
+- (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj{
+    
+    
 }
 @end

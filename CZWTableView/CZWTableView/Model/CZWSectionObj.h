@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CZWRowObj.h"
-@interface CZWSectionObj : NSObject
+@interface CZWSectionObj : CZWRowObj
 @property (strong, nonatomic) NSMutableArray<CZWRowObj *> *rowArray;
 - (instancetype)initWithItemArray:(NSArray <CZWRowObj*>*)items;
 @end

@@ -27,6 +27,8 @@
     return [[CZWTableViewModel alloc]initWithData:nil];
 }
 
+#pragma mark - optional override
+
 /**
  *  如果不重写这个方法就要按照
  *   "obj类名后加Cell为Cell的类名" 的命名规则命名
@@ -40,6 +42,12 @@
     //eg.
     return NSClassFromString(cellClassStr);
 }
+
+/**
+ *  可以重写这些获得obj,也可以重写UITableViewDelegate的获得IndexPath
+ */
+- (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj{}
+- (void)czw_tableView:(CZWTableView *)tableView didDeselectRowObj:(CZWRowObj *)rowObj{}
 
 
 #pragma mark - initialize
@@ -127,7 +135,17 @@
     }
     return rowObj.cellClass;
 }
-
+/**
+ *  Cell Height cache
+ */
+- (CGFloat)tableView:(CZWTableView *)tableView checkCacheRowHeightForObject:(CZWRowObj *)rowObj{
+    if (rowObj.cellHeight == CellNeedRecountHeight) {
+        Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
+        CGFloat cellHeight = [cellClass tableView:tableView rowHeightForObject:rowObj];
+        rowObj.cellHeight = cellHeight;//缓存
+    }
+    return rowObj.cellHeight;
+}
 
 
 #pragma mark - UITableViewDataSource
@@ -155,24 +173,53 @@
 }
 
 #pragma mark - UITableViewDelegate
-
+/**
+ *  can't be override
+ *  如果被重写 cell的自我计算高度就会失效
+ */
 - (CGFloat)tableView:(CZWTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
     
     return [self tableView:tableView checkCacheRowHeightForObject:rowObj];
 }
 
-
-
-#pragma mark - cache
-- (CGFloat)tableView:(CZWTableView *)tableView checkCacheRowHeightForObject:(CZWRowObj *)rowObj{
-    if (rowObj.cellHeight == CellNeedRecountHeight) {
-        Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
-        CGFloat cellHeight = [cellClass tableView:tableView rowHeightForObject:rowObj];
-        rowObj.cellHeight = cellHeight;//缓存
-    }
-    return rowObj.cellHeight;
+- (CGFloat)tableView:(CZWTableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
+    return [self tableView:tableView checkCacheRowHeightForObject:secObj];
 }
+
+- (CGFloat)tableView:(CZWTableView *)tableView heightForFooterInSection:(NSInteger)section{
+    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
+    return [self tableView:tableView checkCacheRowHeightForObject:secObj];
+}
+
+- (nullable UIView *)tableView:(CZWTableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
+    Class cellClass = [self checkObjCellClassCache:tableView object:secObj];
+    NSString *cellName = [NSString stringWithFormat:@"%s",class_getName(cellClass)];
+    if ([cellClass conformsToProtocol:@protocol(CZWTableViewCellProtocol)]) {
+        return [[tableView ] settingData:rowObj];
+    } else {
+        NSLog(@"cell Class didn't conforms To Protocol CZWTableViewCellProtocol : %s",__FUNCTION__);
+        return nil;
+    }
+}
+
+- (nullable UIView *)tableView:(CZWTableView *)tableView viewForFooterInSection:(NSInteger)section{
+
+}
+
+
+- (void)tableView:(CZWTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
+    [self czw_tableView:tableView didSelectRowObj:rowObj];
+}
+
+- (void)tableView:(CZWTableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
+    [self czw_tableView:tableView didDeselectRowObj:rowObj];
+}
+
 
 
 @end

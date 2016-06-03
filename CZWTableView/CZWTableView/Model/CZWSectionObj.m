@@ -12,6 +12,7 @@
 - (instancetype)init{
     self = [super init];
     if (self) {
+        //默认
         self.rowArray = [[NSMutableArray alloc]init];
     }
     return self;

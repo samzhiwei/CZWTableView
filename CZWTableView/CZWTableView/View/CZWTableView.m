@@ -9,6 +9,15 @@
 #import "CZWTableView.h"
 
 @implementation CZWTableView
+#pragma mark - optional override
+/**
+ *  可以给子类重写初始化设定
+ */
+- (void)initSetting{
+    self.separatorColor = [UIColor clearColor];
+    self.showsVerticalScrollIndicator = YES;
+    self.showsHorizontalScrollIndicator = NO;
+}
 
 #pragma mark - Initialize
 - (instancetype)init{
@@ -35,11 +44,6 @@
     return self;
 }
 
-- (void)initSetting{
-    self.separatorColor = [UIColor clearColor];
-    self.showsVerticalScrollIndicator = YES;
-    self.showsHorizontalScrollIndicator = NO;
-}
 
 #pragma mark - Api
 
@@ -115,6 +119,10 @@
         NSString *cellClassStr = NSStringFromClass(cellClass);
         [self registerClass:cellClass forCellReuseIdentifier:cellClassStr];
     }
+}
+
+- (void)registerHeaderCellClasses:(NSArray <Class>*)classes{
+    [self registerNib:<#(nullable UINib *)#> forHeaderFooterViewReuseIdentifier:<#(nonnull NSString *)#>]
 }
 
 - (void)pastDelegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
