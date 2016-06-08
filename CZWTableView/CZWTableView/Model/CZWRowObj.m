@@ -16,6 +16,8 @@ CGFloat const CellNeedRecountHeight = -1;
         //默认
         _cellHeight = CellNeedRecountHeight;
         _cellClass = NULL;
+        _canEdit = CZWRowObjEditStatusNeedRecount;
+        _canMove = CZWRowObjMoveStatusNeedRecount;
     }
     return self;
 }

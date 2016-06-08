@@ -14,6 +14,8 @@
     if (self) {
         //默认
         self.rowArray = [[NSMutableArray alloc]init];
+        self.titleForFooter = nil;
+        self.titleForHeader = nil;
     }
     return self;
 }

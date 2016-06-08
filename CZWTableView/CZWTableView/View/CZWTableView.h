@@ -11,9 +11,13 @@
  *  1.注册所有需要用到的cell(暂时只能通过nib注册)
  *  2.设置delegate
  *  3.设置dataSource
+ *  PS.如果sectionObj有对应的自定义View。系统的header和footer会默认不显示,sectionObj的titleForHeader和titleForFooter会失效。
  */
 
 #import "CZWTableViewProtocol.h"
+
+
+
 @interface CZWTableView : UITableView
 @property (weak, nonatomic) id <CZWTableViewModelProtocol> model;
 /**
@@ -35,5 +39,6 @@
 
 - (void)registerCellClasses:(NSArray <Class>*)classes;
 - (void)registerCellNibs:(NSArray <NSString *>*)nibNames;
+
 
 @end

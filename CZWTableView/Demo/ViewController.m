@@ -13,6 +13,7 @@
 #import "CZWTeather.h"
 #import "CZWStudentCell.h"
 #import "CZWTeatherCell.h"
+#import "CZWSchoolCell.h"
 @interface ViewController ()
 @property (strong, nonatomic) CZWTableViewModel *firstModel;
 @property (strong, nonatomic) CZWTableViewModel *secondModel;
@@ -25,6 +26,9 @@
         NSMutableArray *array = [[NSMutableArray alloc]init];
         for (int i = 0; i<3; i++) {
             CZWSchool *array1 = [[CZWSchool alloc]init];
+            array1.titleForHeader = [NSString stringWithFormat:@"第%d,titleForHeader",i];
+            array1.titleForFooter = [NSString stringWithFormat:@"第%d,titleForFooter",i];
+            array1.headerTitle = [NSString stringWithFormat:@"第%d",i];
             for (int j = 0; j<100; j++) {
                 if (j<50) {
                     CZWStudent *stu1 = [[CZWStudent alloc]init];
@@ -54,6 +58,10 @@
     NSArray *array = @[NSStringFromClass([CZWStudentCell class]),NSStringFromClass([CZWTeatherCell class])];
     self.tableView = [[CZWMapTableView alloc]initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain registerCellNibNames:array delegate:self dataSource:self];
     self.tableView.tag = 1;
+    UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(100, 100, 50, 50)];
+    [button addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
+    button.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:button];
 }
 
 - (CZWTableViewModel *)createModel:(CZWTableView *)tableView{
@@ -69,6 +77,12 @@
 
 - (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj{
     
+    
+}
+
+- (void)click:(UIButton *)sender{
+    self.tableView.allowsMultipleSelection =YES;
+    self.tableView.editing = !self.tableView.editing;
     
 }
 @end

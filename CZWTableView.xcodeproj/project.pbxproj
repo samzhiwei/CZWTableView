@@ -19,6 +19,8 @@
 		511D8F201CFEC0C80003828D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 511D8F1F1CFEC0C80003828D /* AppDelegate.m */; };
 		511D8F251CFEC9B60003828D /* CZWRowObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 511D8F221CFEC9B60003828D /* CZWRowObj.m */; };
 		511D8F261CFEC9B60003828D /* CZWSectionObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 511D8F241CFEC9B60003828D /* CZWSectionObj.m */; };
+		516B11A71D05157B00A50AAA /* CZWSchoolCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 516B11A51D05157B00A50AAA /* CZWSchoolCell.m */; };
+		516B11A81D05157B00A50AAA /* CZWSchoolCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 516B11A61D05157B00A50AAA /* CZWSchoolCell.xib */; };
 		51BC0FB31D00194D00B200D4 /* CZWSchool.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FB21D00194D00B200D4 /* CZWSchool.m */; };
 		51BC0FB61D00196F00B200D4 /* CZWStudent.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FB51D00196F00B200D4 /* CZWStudent.m */; };
 		51BC0FB81D001AFC00B200D4 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 51BC0FB71D001AFC00B200D4 /* 37x-Checkmark.png */; };
@@ -52,6 +54,9 @@
 		511D8F221CFEC9B60003828D /* CZWRowObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWRowObj.m; sourceTree = "<group>"; };
 		511D8F231CFEC9B60003828D /* CZWSectionObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWSectionObj.h; sourceTree = "<group>"; };
 		511D8F241CFEC9B60003828D /* CZWSectionObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWSectionObj.m; sourceTree = "<group>"; };
+		516B11A41D05157B00A50AAA /* CZWSchoolCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWSchoolCell.h; sourceTree = "<group>"; };
+		516B11A51D05157B00A50AAA /* CZWSchoolCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWSchoolCell.m; sourceTree = "<group>"; };
+		516B11A61D05157B00A50AAA /* CZWSchoolCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CZWSchoolCell.xib; sourceTree = "<group>"; };
 		51BC0FB11D00194D00B200D4 /* CZWSchool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWSchool.h; sourceTree = "<group>"; };
 		51BC0FB21D00194D00B200D4 /* CZWSchool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWSchool.m; sourceTree = "<group>"; };
 		51BC0FB41D00196F00B200D4 /* CZWStudent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWStudent.h; sourceTree = "<group>"; };
@@ -142,6 +147,9 @@
 				51BC0FD21D00290E00B200D4 /* CZWMapTableView.m */,
 				51BC0FB11D00194D00B200D4 /* CZWSchool.h */,
 				51BC0FB21D00194D00B200D4 /* CZWSchool.m */,
+				516B11A41D05157B00A50AAA /* CZWSchoolCell.h */,
+				516B11A51D05157B00A50AAA /* CZWSchoolCell.m */,
+				516B11A61D05157B00A50AAA /* CZWSchoolCell.xib */,
 				51BC0FB41D00196F00B200D4 /* CZWStudent.h */,
 				51BC0FB51D00196F00B200D4 /* CZWStudent.m */,
 				51BC0FC41D001C1300B200D4 /* CZWStudentCell.h */,
@@ -259,6 +267,7 @@
 				511D8F1A1CFEC0800003828D /* LaunchScreen.storyboard in Resources */,
 				51BC0FCD1D00200A00B200D4 /* CZWTeatherCell.xib in Resources */,
 				51BC0FC81D001C1300B200D4 /* CZWStudentCell.xib in Resources */,
+				516B11A81D05157B00A50AAA /* CZWSchoolCell.xib in Resources */,
 				51BC0FB81D001AFC00B200D4 /* 37x-Checkmark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,6 +285,7 @@
 				511D8F041CFEBA7A0003828D /* ViewController.m in Sources */,
 				511D8F0A1CFEBAEA0003828D /* CZWTableViewController.m in Sources */,
 				51BC0FD01D0020F400B200D4 /* CZWTeather.m in Sources */,
+				516B11A71D05157B00A50AAA /* CZWSchoolCell.m in Sources */,
 				511D8F251CFEC9B60003828D /* CZWRowObj.m in Sources */,
 				511D8F1D1CFEC0800003828D /* main.m in Sources */,
 				511D8F261CFEC9B60003828D /* CZWSectionObj.m in Sources */,

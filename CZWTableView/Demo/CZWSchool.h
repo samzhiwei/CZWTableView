@@ -9,5 +9,6 @@
 #import "CZWSectionObj.h"
 
 @interface CZWSchool : CZWSectionObj
-
+@property (strong, nonatomic) NSString *headerTitle;
+@property (strong, nonatomic) NSString *footerTitle;
 @end

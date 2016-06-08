@@ -8,7 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "CZWRowObj.h"
-@interface CZWSectionObj : CZWRowObj
+@interface CZWSectionObj : NSObject
 @property (strong, nonatomic) NSMutableArray<CZWRowObj *> *rowArray;
+/**
+ *  设置后就按照系统的HeaderView生成
+ */
+@property (copy, nonatomic) NSString *titleForHeader;
+/**
+ *  设置后就按照系统的FooterView生成
+ */
+@property (copy, nonatomic) NSString *titleForFooter;
 - (instancetype)initWithItemArray:(NSArray <CZWRowObj*>*)items;
 @end

@@ -8,12 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 /**
  *  为解耦而设
  */
-
-
-
 @protocol CZWTableViewCellProtocol <NSObject>
 @required
 /**
@@ -24,10 +22,12 @@
 + (CGFloat)tableView:(UITableView *)tableView rowHeightForObject:(id)rowObj;
 //配置好然后返回self
 - (UITableViewCell *)settingData:(id)rowObj;
+
 @end
 
 @protocol CZWTableViewModelProtocol <NSObject>
 
 
-
 @end
+
+

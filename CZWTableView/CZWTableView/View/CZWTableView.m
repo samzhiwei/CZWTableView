@@ -17,6 +17,7 @@
     self.separatorColor = [UIColor clearColor];
     self.showsVerticalScrollIndicator = YES;
     self.showsHorizontalScrollIndicator = NO;
+    self.allowsMultipleSelection = YES;
 }
 
 #pragma mark - Initialize
@@ -43,6 +44,7 @@
     }
     return self;
 }
+
 
 
 #pragma mark - Api
@@ -121,9 +123,6 @@
     }
 }
 
-- (void)registerHeaderCellClasses:(NSArray <Class>*)classes{
-    [self registerNib:<#(nullable UINib *)#> forHeaderFooterViewReuseIdentifier:<#(nonnull NSString *)#>]
-}
 
 - (void)pastDelegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
     self.delegate = delegate;

@@ -46,8 +46,29 @@
 /**
  *  可以重写这些获得obj,也可以重写UITableViewDelegate的获得IndexPath
  */
+//UITableViewDataSource
+- (BOOL)czw_tableView:(CZWTableView *)tableView canEditRowObj:(CZWRowObj *)obj{
+    return YES;
+}
+- (BOOL)czw_tableView:(CZWTableView *)tableView canMoveRowObj:(CZWRowObj *)obj{
+    return YES;
+}
+//UITableViewDelegate
 - (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj{}
 - (void)czw_tableView:(CZWTableView *)tableView didDeselectRowObj:(CZWRowObj *)rowObj{}
+- (CGFloat)czw_tableView:(CZWTableView *)tableView heightForHeaderInSectionObj:(CZWSectionObj *)secObj{
+    return 0;
+}
+- (CGFloat)czw_tableView:(CZWTableView *)tableView heightForFooterInSectionObj:(CZWSectionObj *)secObj{
+    return 0;
+}
+- (nullable UIView *)czw_tableView:(CZWTableView *)tableView viewForHeaderInSectionObj:(CZWSectionObj *)secObj{
+    return nil;
+}
+
+- (nullable UIView *)czw_tableView:(CZWTableView *)tableView viewForFooterInSectionObj:(CZWSectionObj *)secObj{
+    return nil;
+}
 
 
 #pragma mark - initialize
@@ -82,7 +103,7 @@
 }
 
 #pragma mark - initialize Api
-//初始化必须tableView (原因：根据tableView区分model(逻辑由用户写))
+//初始化必须tableView (原因：根据tableView区分model(逻辑由子类写))
 - (instancetype)initWithStyle:(UITableViewStyle)style tableView:(CZWTableView *)tableVIew{
     self = [self initWithStyle:style];
     if (self) {
@@ -92,10 +113,113 @@
 }
 
 - (void)settingTableView:(CZWTableView *)tableVIew{
-
+    
     tableVIew.delegate = self;
     tableVIew.dataSource = self;
     
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfSectionsInTableView:(CZWTableView *)tableView {
+    CZWTableViewModel *model = [self getModelFromTableView:tableView];
+    return model.sectionCount;
+}
+
+- (NSInteger)tableView:(CZWTableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
+    return secObj.rowArray.count;
+}
+
+- (UITableViewCell *)tableView:(CZWTableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
+    Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
+    NSString *cellName = [NSString stringWithFormat:@"%s",class_getName(cellClass)];
+    if ([cellClass conformsToProtocol:@protocol(CZWTableViewCellProtocol)]) {
+        return [[tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath] settingData:rowObj];
+    } else {
+        NSLog(@"cell Class didn't conforms To Protocol CZWTableViewCellProtocol : %s",__FUNCTION__);
+        return nil;
+    }
+}
+
+#pragma 以下的可以重写原生也可以重写自定义czw_开头的
+- (BOOL)tableView:(CZWTableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [self tableView:tableView checkCanEditRowAtIndexPath:indexPath];
+}
+
+- (BOOL)tableView:(CZWTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath{
+    return [self tableView:tableView checkCanMoveRowAtIndexPath:indexPath];
+}
+
+- (void)tableView:(CZWTableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    switch (editingStyle) {
+        case UITableViewCellEditingStyleNone:
+            break;
+        case UITableViewCellEditingStyleDelete:{
+            
+        }
+            break;
+        case UITableViewCellEditingStyleInsert:
+            break;
+    }
+}
+
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    
+}
+#pragma 不重写就自动按照设置创建
+- (NSString *)tableView:(CZWTableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
+    return secObj.titleForHeader;
+}
+
+- (NSString *)tableView:(CZWTableView *)tableView titleForFooterInSection:(NSInteger)section {
+    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
+    return secObj.titleForFooter;
+}
+
+#pragma mark - UITableViewDelegate
+/**
+ *  can't be override
+ *  如果被重写 cell的自我计算高度就会失效
+ */
+- (CGFloat)tableView:(CZWTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
+    
+    return [self tableView:tableView checkCacheRowHeightForObject:rowObj];
+}
+
+#pragma 以下的可以重写原生也可以重写自定义czw_开头的
+- (CGFloat)tableView:(CZWTableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
+    return [self czw_tableView:tableView heightForHeaderInSectionObj:secObj];
+}
+
+- (CGFloat)tableView:(CZWTableView *)tableView heightForFooterInSection:(NSInteger)section{
+    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
+    return [self czw_tableView:tableView heightForFooterInSectionObj:secObj];
+}
+
+- (nullable UIView *)tableView:(CZWTableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
+    return [self czw_tableView:tableView viewForHeaderInSectionObj:secObj];
+}
+
+- (nullable UIView *)tableView:(CZWTableView *)tableView viewForFooterInSection:(NSInteger)section{
+    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
+    return [self czw_tableView:tableView viewForFooterInSectionObj:secObj];
+}
+
+- (void)tableView:(CZWTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
+    [self czw_tableView:tableView didSelectRowObj:rowObj];
+}
+
+- (void)tableView:(CZWTableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
+    [self czw_tableView:tableView didDeselectRowObj:rowObj];
 }
 
 #pragma mark - Private
@@ -105,7 +229,7 @@
 }
 
 - (CZWSectionObj *)getSectionObjAtIndex:(NSInteger)section fromTableView:(CZWTableView *)tableView{
-     CZWTableViewModel *model = [self checkModelCache:tableView];
+    CZWTableViewModel *model = [self checkModelCache:tableView];
     return [model sectionObjectAtIndex:section];
 }
 
@@ -146,80 +270,56 @@
     }
     return rowObj.cellHeight;
 }
-
-
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)numberOfSectionsInTableView:(CZWTableView *)tableView {
-    CZWTableViewModel *model = [self getModelFromTableView:tableView];
-    return model.sectionCount;
-}
-
-- (NSInteger)tableView:(CZWTableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return secObj.rowArray.count;
-}
-
-- (UITableViewCell *)tableView:(CZWTableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
-    NSString *cellName = [NSString stringWithFormat:@"%s",class_getName(cellClass)];
-    if ([cellClass conformsToProtocol:@protocol(CZWTableViewCellProtocol)]) {
-        return [[tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath] settingData:rowObj];
-    } else {
-        NSLog(@"cell Class didn't conforms To Protocol CZWTableViewCellProtocol : %s",__FUNCTION__);
-        return nil;
-    }
-}
-
-#pragma mark - UITableViewDelegate
 /**
- *  can't be override
- *  如果被重写 cell的自我计算高度就会失效
+ *  Cell canEdit cache
  */
-- (CGFloat)tableView:(CZWTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    
-    return [self tableView:tableView checkCacheRowHeightForObject:rowObj];
-}
-
-- (CGFloat)tableView:(CZWTableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return [self tableView:tableView checkCacheRowHeightForObject:secObj];
-}
-
-- (CGFloat)tableView:(CZWTableView *)tableView heightForFooterInSection:(NSInteger)section{
-    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return [self tableView:tableView checkCacheRowHeightForObject:secObj];
-}
-
-- (nullable UIView *)tableView:(CZWTableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    Class cellClass = [self checkObjCellClassCache:tableView object:secObj];
-    NSString *cellName = [NSString stringWithFormat:@"%s",class_getName(cellClass)];
-    if ([cellClass conformsToProtocol:@protocol(CZWTableViewCellProtocol)]) {
-        return [[tableView ] settingData:rowObj];
-    } else {
-        NSLog(@"cell Class didn't conforms To Protocol CZWTableViewCellProtocol : %s",__FUNCTION__);
-        return nil;
+- (BOOL)tableView:(CZWTableView *)tableView checkCanEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    CZWRowObj * rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
+    switch (rowObj.canEdit) {
+        case CZWRowObjEditStatusNeedRecount:{
+            BOOL canEdit = [self czw_tableView:tableView canEditRowObj:rowObj];
+            if (canEdit) {
+                rowObj.canEdit = CZWRowObjEditStatusCanEdit;
+                return YES;
+            } else {
+                rowObj.canEdit = CZWRowObjEditStatusNotEdit;
+                return NO;
+            }
+            break;
+        }
+        case CZWRowObjEditStatusCanEdit:
+            return YES;
+            break;
+        case CZWRowObjEditStatusNotEdit:
+            return NO;
+            break;
     }
 }
-
-- (nullable UIView *)tableView:(CZWTableView *)tableView viewForFooterInSection:(NSInteger)section{
-
+/**
+ *  Cell canMove cache
+ */
+- (BOOL)tableView:(CZWTableView *)tableView checkCanMoveRowAtIndexPath:(NSIndexPath *)indexPath{
+    CZWRowObj * rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
+    switch (rowObj.canMove) {
+        case CZWRowObjMoveStatusNeedRecount:{
+            BOOL canMove = [self czw_tableView:tableView canMoveRowObj:rowObj];
+            if (canMove) {
+                rowObj.canMove = CZWRowObjMoveStatusCanMove;
+                return YES;
+            } else {
+                rowObj.canMove = CZWRowObjMoveStatusNotMove;
+                return NO;
+            }
+            break;
+        }
+        case CZWRowObjMoveStatusCanMove:
+            return YES;
+            break;
+        case CZWRowObjMoveStatusNotMove:
+            return NO;
+            break;
+    }
 }
-
-
-- (void)tableView:(CZWTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    [self czw_tableView:tableView didSelectRowObj:rowObj];
-}
-
-- (void)tableView:(CZWTableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
-    CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    [self czw_tableView:tableView didDeselectRowObj:rowObj];
-}
-
 
 
 @end
