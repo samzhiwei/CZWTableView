@@ -39,6 +39,10 @@
 
 - (void)registerCellClasses:(NSArray <Class>*)classes;
 - (void)registerCellNibs:(NSArray <NSString *>*)nibNames;
+/**
+ *  刷新对应的obj;
+ */
+- (void)refreshRowObjIndexPath:(NSIndexPath *)indexPath;
 
 
 @end

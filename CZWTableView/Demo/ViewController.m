@@ -17,6 +17,7 @@
 @interface ViewController ()
 @property (strong, nonatomic) CZWTableViewModel *firstModel;
 @property (strong, nonatomic) CZWTableViewModel *secondModel;
+@property (strong, nonatomic) CZWTableView *tableView;
 @end
 
 @implementation ViewController
@@ -58,10 +59,22 @@
     NSArray *array = @[NSStringFromClass([CZWStudentCell class]),NSStringFromClass([CZWTeatherCell class])];
     self.tableView = [[CZWMapTableView alloc]initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain registerCellNibNames:array delegate:self dataSource:self];
     self.tableView.tag = 1;
+    [self.view addSubview:self.tableView];
     UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(100, 100, 50, 50)];
     [button addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
     button.backgroundColor = [UIColor yellowColor];
     [self.view addSubview:button];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    self.tableView.frame = self.view.bounds;
+    [self addSwipeGestureRecognizer];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [self removeSwipeGestureRecognizer];
 }
 
 - (CZWTableViewModel *)createModel:(CZWTableView *)tableView{
@@ -74,11 +87,13 @@
         return nil;
     }
 }
-
-- (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj{
-    
-    
+- (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj atIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    obj.cellHeightCorrection = 30;
+    obj.needRecountCellHeight = YES;
+    [tableView refreshRowObjIndexPath:indexPath];
 }
+
 
 - (void)click:(UIButton *)sender{
     self.tableView.allowsMultipleSelection =YES;

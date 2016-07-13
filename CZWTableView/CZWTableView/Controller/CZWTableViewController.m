@@ -15,7 +15,7 @@
 @implementation CZWTableViewController
 #pragma mark - must override
 /**
- *  子类必须重写，controller必须自己强持有model和view;
+ *  子类必须重写，子类必须自己强持有model和view;有子类自己控制model和view的生命周期
  *  执行一次后CZWTableView会弱持有自己的model;只有!model 时会重新调用询问
  */
 - (CZWTableViewModel * __nonnull)createModel:(CZWTableView *)tableView{
@@ -54,8 +54,8 @@
     return YES;
 }
 //UITableViewDelegate
-- (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj{}
-- (void)czw_tableView:(CZWTableView *)tableView didDeselectRowObj:(CZWRowObj *)rowObj{}
+- (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj atIndexPath:(NSIndexPath *)indexPath{}
+- (void)czw_tableView:(CZWTableView *)tableView didDeselectRowObj:(CZWRowObj *)rowObj atIndexPath:(NSIndexPath *)indexPath{}
 - (CGFloat)czw_tableView:(CZWTableView *)tableView heightForHeaderInSectionObj:(CZWSectionObj *)secObj{
     return 0;
 }
@@ -86,14 +86,6 @@
     return self;
 }
 
-- (instancetype)initWithStyle:(UITableViewStyle)style{
-    self = [super initWithStyle:style];
-    if (self) {
-        [self initSetting];
-    }
-    return self;
-}
-
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle: nibBundleOrNil];
     if (self) {
@@ -104,8 +96,8 @@
 
 #pragma mark - initialize Api
 //初始化必须tableView (原因：根据tableView区分model(逻辑由子类写))
-- (instancetype)initWithStyle:(UITableViewStyle)style tableView:(CZWTableView *)tableVIew{
-    self = [self initWithStyle:style];
+- (instancetype)initWithTableView:(CZWTableView *)tableVIew{
+    self = [self init];
     if (self) {
         [self settingTableView:tableVIew];
     }
@@ -136,7 +128,9 @@
     Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
     NSString *cellName = [NSString stringWithFormat:@"%s",class_getName(cellClass)];
     if ([cellClass conformsToProtocol:@protocol(CZWTableViewCellProtocol)]) {
-        return [[tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath] settingData:rowObj];
+        id <CZWTableViewCellProtocol> cell = [tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath];
+        NSLog(@"%@",cell);
+        return [cell settingData:rowObj];
     } else {
         NSLog(@"cell Class didn't conforms To Protocol CZWTableViewCellProtocol : %s",__FUNCTION__);
         return nil;
@@ -214,12 +208,12 @@
 
 - (void)tableView:(CZWTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    [self czw_tableView:tableView didSelectRowObj:rowObj];
+    [self czw_tableView:tableView didSelectRowObj:rowObj atIndexPath:indexPath];
 }
 
 - (void)tableView:(CZWTableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    [self czw_tableView:tableView didDeselectRowObj:rowObj];
+    [self czw_tableView:tableView didDeselectRowObj:rowObj atIndexPath:indexPath];
 }
 
 #pragma mark - Private
@@ -263,10 +257,11 @@
  *  Cell Height cache
  */
 - (CGFloat)tableView:(CZWTableView *)tableView checkCacheRowHeightForObject:(CZWRowObj *)rowObj{
-    if (rowObj.cellHeight == CellNeedRecountHeight) {
+    if (rowObj.needRecountCellHeight) {
         Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
         CGFloat cellHeight = [cellClass tableView:tableView rowHeightForObject:rowObj];
-        rowObj.cellHeight = cellHeight;//缓存
+        [rowObj updateCellHeight:cellHeight];
+        rowObj.needRecountCellHeight = NO;
     }
     return rowObj.cellHeight;
 }

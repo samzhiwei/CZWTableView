@@ -54,7 +54,8 @@
     if (self.dataArray.count > indexPath.section) {
         CZWSectionObj *sectionObj = [self.dataArray objectAtIndex:indexPath.section];
         if (sectionObj.rowArray.count > indexPath.row) {
-            return [sectionObj.rowArray objectAtIndex:indexPath.row];
+            CZWRowObj *rowObj = [sectionObj.rowArray objectAtIndex:indexPath.row];
+            return rowObj;
         }
     }
     NSLog(@"check model.dataArray:%s",__FUNCTION__);;

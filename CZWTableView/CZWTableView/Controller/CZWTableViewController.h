@@ -7,18 +7,22 @@
 //
 
 /**
- *  一个controller只对应一个tableView,一个model;
+ *  ps.
+ *  1.继承CZWTableViewController
+ *  2.重写- (CZWTableViewModel *)createModel:(CZWTableView *)tableView;绑定model和tableView
+ *  3.CZWTableViewModel数据按形式继承CZWSectionObj,CZWRowObj类;建立二维数组
+ *  4.创建tableView时绑定相应的cell
+ *  5.cell视图准守CZWTableViewCellProtocol协议
  */
+#import "CZWBaseViewController.h"
 
 #import "CZWTableViewProtocol.h"
-
-
 #import "CZWTableView.h"
 #import "CZWTableViewModel.h"
 
-@interface CZWTableViewController : UITableViewController
+@interface CZWTableViewController : CZWBaseViewController <UITableViewDataSource,UITableViewDelegate>
 /**
  *  自动绑定tableView的delegate和dataSource
  */
-- (instancetype)initWithStyle:(UITableViewStyle)style tableView:(CZWTableView *)tableVIew;
+- (instancetype)initWithTableView:(CZWTableView *)tableVIew;
 @end

@@ -30,6 +30,7 @@
 		51BC0FCD1D00200A00B200D4 /* CZWTeatherCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51BC0FCB1D00200A00B200D4 /* CZWTeatherCell.xib */; };
 		51BC0FD01D0020F400B200D4 /* CZWTeather.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FCF1D0020F400B200D4 /* CZWTeather.m */; };
 		51BC0FD31D00290E00B200D4 /* CZWMapTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 51BC0FD21D00290E00B200D4 /* CZWMapTableView.m */; };
+		51FF07CD1D34C80700BA7F56 /* CZWBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51FF07CC1D34C80700BA7F56 /* CZWBaseViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,8 @@
 		51BC0FD11D00290E00B200D4 /* CZWMapTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWMapTableView.h; sourceTree = "<group>"; };
 		51BC0FD21D00290E00B200D4 /* CZWMapTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWMapTableView.m; sourceTree = "<group>"; };
 		51BC0FD51D0125E200B200D4 /* CZWTableViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWTableViewProtocol.h; sourceTree = "<group>"; };
+		51FF07CB1D34C80700BA7F56 /* CZWBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZWBaseViewController.h; sourceTree = "<group>"; };
+		51FF07CC1D34C80700BA7F56 /* CZWBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZWBaseViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +115,8 @@
 				511D8F1E1CFEC0C80003828D /* AppDelegate.h */,
 				511D8F1F1CFEC0C80003828D /* AppDelegate.m */,
 				51BC0FB71D001AFC00B200D4 /* 37x-Checkmark.png */,
+				51FF07CB1D34C80700BA7F56 /* CZWBaseViewController.h */,
+				51FF07CC1D34C80700BA7F56 /* CZWBaseViewController.m */,
 				511D8EF11CFEBA7A0003828D /* CZWTableView */,
 				511D8EF21CFEBA7A0003828D /* Demo */,
 				511D8ED81CFEB9F90003828D /* Supporting Files */,
@@ -290,6 +295,7 @@
 				511D8F1D1CFEC0800003828D /* main.m in Sources */,
 				511D8F261CFEC9B60003828D /* CZWSectionObj.m in Sources */,
 				51BC0FB31D00194D00B200D4 /* CZWSchool.m in Sources */,
+				51FF07CD1D34C80700BA7F56 /* CZWBaseViewController.m in Sources */,
 				51BC0FB61D00196F00B200D4 /* CZWStudent.m in Sources */,
 				51BC0FD31D00290E00B200D4 /* CZWMapTableView.m in Sources */,
 				51BC0FC71D001C1300B200D4 /* CZWStudentCell.m in Sources */,

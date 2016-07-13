@@ -129,5 +129,9 @@
     self.dataSource = dataSource;
 }
 
+- (void)refreshRowObjIndexPath:(NSIndexPath *)indexPath{
+    [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 
 @end
