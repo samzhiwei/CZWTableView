@@ -18,6 +18,7 @@
     self.showsVerticalScrollIndicator = YES;
     self.showsHorizontalScrollIndicator = NO;
     self.allowsMultipleSelection = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUI:) name:ntkModelUpdate object:nil];
 }
 
 #pragma mark - Initialize
@@ -43,6 +44,10 @@
         [self initSetting];
     }
     return self;
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ntkModelUpdate object:nil];
 }
 
 
@@ -129,9 +134,13 @@
     self.dataSource = dataSource;
 }
 
-- (void)refreshRowObjIndexPath:(NSIndexPath *)indexPath{
+- (void)refreshUI:(NSNotification *)noti{
+    NSIndexPath *indexPath = [noti.userInfo objectForKey:@"indexPath"];
+    //[self beginUpdates];
     [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    //[self endUpdates];
 }
+
 
 
 @end

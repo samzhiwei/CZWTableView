@@ -7,27 +7,48 @@
 //
 
 #import "CZWRowObj.h"
-CGFloat const CellNeedRecountHeight = 44;
-@implementation CZWRowObj
+CGFloat const CellNeedRecountHeight = -1;
 
-@synthesize cellHeight = _cellHeight;
+@implementation CZWRowObj
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         //默认
-        _needRecountCellHeight = YES;
+        _usePriorityCellHeight = NO;
+        _usePriorityEditStatus = NO;
+        _usePriorityMoveStatus = NO;
+
         _cellHeight = CellNeedRecountHeight;
         _cellClass = NULL;
         _canEdit = CZWRowObjEditStatusNeedRecount;
         _canMove = CZWRowObjMoveStatusNeedRecount;
-        _cellHeightCorrection = 0.0;
     }
     return self;
 }
 
-- (void)updateCellHeight:(CGFloat)cellHeight{
-    _cellHeight = cellHeight + self.cellHeightCorrection;
+- (void)updateCellStatus:(void (^)(CZWRowObj *rowObj))status{
+    CGFloat tempCellHeight = _cellHeight;
+    CZWRowObjEditStatus tempCanEdit = _canEdit;
+    CZWRowObjMoveStatus tempCanMove = _canMove;
+    if (status) {
+        status(self);
+        if (_delegate) {
+            if (self.cellHeight != tempCellHeight) {
+                _usePriorityCellHeight = YES;
+            }
+            if (self.canEdit != tempCanEdit) {
+                _usePriorityEditStatus = YES;
+            }
+            if (self.canMove != tempCanMove) {
+                 _usePriorityMoveStatus = YES;
+            }
+            [_delegate updateModel:self];
+        }
+    }
 }
+
+
+
 
 @end

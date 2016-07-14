@@ -21,6 +21,8 @@
 @property (assign, nonatomic, readonly) NSUInteger sectionCount;
 @property (assign, nonatomic, readonly) NSUInteger objectCount;
 
+
+
 #pragma mark - 查询
 /**
  *  section位置查询第一维数组
@@ -29,7 +31,12 @@
 /**
  *  indexPath查询第二维数组
  */
-- (CZWRowObj *)tableView:(UITableView *)tableView objectForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CZWRowObj *)objectForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+#pragma mark - 操作
+- (void)exchangeObj:(CZWRowObj *)objOne obj:(CZWRowObj *)objTwo;
+
+- (void)exchangeIndexPath:(NSIndexPath *)indexPathOne toIndexPath:(NSIndexPath *)indexPathTwo;
 
 
 @end

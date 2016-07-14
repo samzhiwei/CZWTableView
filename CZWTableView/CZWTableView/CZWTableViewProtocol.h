@@ -12,6 +12,7 @@
 /**
  *  为解耦而设
  */
+#define ntkModelUpdate @"ntkModelUpdate"
 @protocol CZWTableViewCellProtocol <NSObject>
 @required
 /**
@@ -26,7 +27,9 @@
 @end
 
 @protocol CZWTableViewModelProtocol <NSObject>
+@required
 
+- (void)updateModel:(id)value;
 
 @end
 

@@ -12,6 +12,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "CZWTableViewProtocol.h"
 FOUNDATION_EXPORT CGFloat const CellNeedRecountHeight;
 
 typedef NS_ENUM(NSUInteger, CZWRowObjEditStatus) {
@@ -27,21 +28,34 @@ typedef NS_ENUM(NSUInteger, CZWRowObjMoveStatus) {
 
 @interface CZWRowObj : NSObject
 /**
- *  不能手动修改
+ *  需要修改在updateObjStatus/updateCellStatus方法中修改
  */
 @property (assign, nonatomic) Class cellClass;
-@property (assign, nonatomic, readonly) CGFloat cellHeight;//自动计算，会自动加上修正量
+@property (weak, nonatomic) id <CZWTableViewModelProtocol> delegate;
+
+/**
+ *  当需要主动修改上述值时以下开关会被全部打开，优先修改为主动修改值
+ */
+@property (assign, nonatomic) BOOL usePriorityCellHeight;//修改成Yes后刷新就可以强制改变了
+@property (assign, nonatomic) BOOL usePriorityEditStatus;
+@property (assign, nonatomic) BOOL usePriorityMoveStatus;
+
+
+
+#pragma mark - 即时反馈更新
+/**
+ *  改变后马上更新UI
+ */
+- (void)updateCellStatus:(void (^)(CZWRowObj *rowObj))status;
+
+/**
+ *  此值根据+ (CGFloat)tableView:(UITableView *)tableView rowHeightForObject:(id)rowObj;计算得出。修改泚值马上改变Cell高度，
+ *  在- (void)updateCellStatus:(void (^)(CZWRowObj *))status中cellHeight改为CellNeedRecountHeight
+ *  最好不要手动改高度，最好是通过 cellHeight = CellNeedRecountHeight然后通过cell自己进行重新计算
+ */
+@property (assign, nonatomic) CGFloat cellHeight;
 @property (assign, nonatomic) CZWRowObjEditStatus canEdit;
 @property (assign, nonatomic) CZWRowObjMoveStatus canMove;
 
-/**
- *  可以修改
- */
-@property (assign, nonatomic) BOOL needRecountCellHeight;//修改成Yes后刷新就可以强制改变了
-@property (assign, nonatomic) CGFloat cellHeightCorrection;//高度修正量
-
-- (void)updateCellStat
-
-- (void)updateCellHeight:(CGFloat)cellHeight;
 
 @end

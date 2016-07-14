@@ -30,6 +30,9 @@
     for (CZWSectionObj *secObj in dataArray) {
         if (secObj) {
             count += secObj.rowArray.count;
+            for (CZWRowObj *rowObj in secObj.rowArray) {
+                rowObj.delegate = self;//绑定更新信息反馈时候用
+            }
         }
     }
     _sectionCount = dataArray.count;
@@ -49,7 +52,7 @@
     
 }
 
-- (CZWRowObj *)tableView:(UITableView *)tableView objectForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CZWRowObj *)objectForRowAtIndexPath:(NSIndexPath *)indexPath {
     //暂时没用到tableView
     if (self.dataArray.count > indexPath.section) {
         CZWSectionObj *sectionObj = [self.dataArray objectAtIndex:indexPath.section];
@@ -60,6 +63,47 @@
     }
     NSLog(@"check model.dataArray:%s",__FUNCTION__);;
     return nil;
+}
+
+- (void)exchangeObj:(CZWRowObj *)objOne obj:(CZWRowObj *)objTwo{
+    NSIndexPath *one = [self indexPathOfRowObj:objOne];
+    NSIndexPath *two = [self indexPathOfRowObj:objTwo];
+    if (one.section == two.section) {
+        CZWSectionObj *secOne = [self sectionObjectAtIndex:one.section];
+        [secOne.rowArray exchangeObjectAtIndex:one.row withObjectAtIndex:two.row];
+    } else {
+        CZWSectionObj *secOne = [self sectionObjectAtIndex:one.section];
+        CZWSectionObj *secTwo = [self sectionObjectAtIndex:two.section];
+        [secOne.rowArray replaceObjectAtIndex:one.row withObject:objTwo];
+        [secTwo.rowArray replaceObjectAtIndex:two.row withObject:objOne];
+    }
+}
+
+- (void)exchangeIndexPath:(NSIndexPath *)indexPathOne toIndexPath:(NSIndexPath *)indexPathTwo{
+    CZWRowObj *one = [self objectForRowAtIndexPath:indexPathOne];
+    CZWRowObj *two = [self objectForRowAtIndexPath:indexPathTwo];
+    [self exchangeObj:one obj:two];
+}
+
+- (NSIndexPath *)indexPathOfRowObj:(CZWRowObj *)obj{
+    for (int i = 0; i < self.dataArray.count; i ++) {
+        CZWSectionObj *secObj = self.dataArray[i];
+        for (int j = 0; j < secObj.rowArray.count; j++) {
+            CZWRowObj *rowObj = secObj.rowArray[j];
+            if (obj == rowObj) {//地址相等
+                return [NSIndexPath indexPathForRow:j inSection:i];
+            }
+        }
+    }
+    return nil;
+}
+
+- (void)updateModel:(CZWRowObj *)rowObj{
+    NSIndexPath *indexPath = [self indexPathOfRowObj:rowObj];
+    if (indexPath == nil) {
+        NSLog(@"地址比对失败");
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:ntkModelUpdate object:nil userInfo:@{@"indexPath" : indexPath}];
 }
 
 

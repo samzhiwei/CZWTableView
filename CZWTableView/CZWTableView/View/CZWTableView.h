@@ -19,7 +19,7 @@
 
 
 @interface CZWTableView : UITableView
-@property (weak, nonatomic) id <CZWTableViewModelProtocol> model;
+@property (weak, nonatomic) id <CZWTableViewModelProtocol> model;//只左缓存用(可弃用)
 /**
  *  约束创建
  */
@@ -39,10 +39,6 @@
 
 - (void)registerCellClasses:(NSArray <Class>*)classes;
 - (void)registerCellNibs:(NSArray <NSString *>*)nibNames;
-/**
- *  刷新对应的obj;
- */
-- (void)refreshRowObjIndexPath:(NSIndexPath *)indexPath;
 
 
 @end

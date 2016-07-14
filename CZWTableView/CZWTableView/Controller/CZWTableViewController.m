@@ -129,12 +129,19 @@
     NSString *cellName = [NSString stringWithFormat:@"%s",class_getName(cellClass)];
     if ([cellClass conformsToProtocol:@protocol(CZWTableViewCellProtocol)]) {
         id <CZWTableViewCellProtocol> cell = [tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath];
-        NSLog(@"%@",cell);
+        [self cellSetting:(UITableViewCell *)cell];
         return [cell settingData:rowObj];
     } else {
         NSLog(@"cell Class didn't conforms To Protocol CZWTableViewCellProtocol : %s",__FUNCTION__);
         return nil;
     }
+}
+
+/**
+ *  cell初始化设置
+ */
+- (void)cellSetting:(UITableViewCell *)cell{
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 #pragma 以下的可以重写原生也可以重写自定义czw_开头的
@@ -160,8 +167,9 @@
 }
 
 
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    
+- (void)tableView:(CZWTableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    CZWTableViewModel *model = [self getModelFromTableView:tableView];
+    [model exchangeIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
 }
 #pragma 不重写就自动按照设置创建
 - (NSString *)tableView:(CZWTableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -181,8 +189,8 @@
  */
 - (CGFloat)tableView:(CZWTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    
-    return [self tableView:tableView checkCacheRowHeightForObject:rowObj];
+    CGFloat height = [self tableView:tableView checkCacheRowHeightForObject:rowObj];
+    return height;
 }
 
 #pragma 以下的可以重写原生也可以重写自定义czw_开头的
@@ -229,7 +237,7 @@
 
 - (CZWRowObj *)getObjectAtIndewPath:(NSIndexPath *)indexPath fromTableView:(CZWTableView *)tableView{
     CZWTableViewModel *model = [self checkModelCache:tableView];
-    return [model tableView:tableView objectForRowAtIndexPath:indexPath];
+    return [model objectForRowAtIndexPath:indexPath];
 }
 
 
@@ -257,12 +265,21 @@
  *  Cell Height cache
  */
 - (CGFloat)tableView:(CZWTableView *)tableView checkCacheRowHeightForObject:(CZWRowObj *)rowObj{
-    if (rowObj.needRecountCellHeight) {
+    CGFloat height = 0.0;
+
+    if (rowObj.cellHeight == CellNeedRecountHeight) {    //通过cell自己计算返回高度
         Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
         CGFloat cellHeight = [cellClass tableView:tableView rowHeightForObject:rowObj];
-        [rowObj updateCellHeight:cellHeight];
-        rowObj.needRecountCellHeight = NO;
+        rowObj.cellHeight = cellHeight;
+        height = rowObj.cellHeight;
+        return height;
     }
+    if (rowObj.usePriorityCellHeight) {//主动修改
+        height = rowObj.cellHeight;
+        rowObj.usePriorityCellHeight = NO;
+        return height;
+    }
+    
     return rowObj.cellHeight;
 }
 /**
@@ -270,7 +287,11 @@
  */
 - (BOOL)tableView:(CZWTableView *)tableView checkCanEditRowAtIndexPath:(NSIndexPath *)indexPath{
     CZWRowObj * rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    switch (rowObj.canEdit) {
+    if (rowObj.usePriorityEditStatus) {//主动修改时
+        rowObj.usePriorityEditStatus = NO;
+        return rowObj.canEdit;
+    }
+    switch (rowObj.canEdit) {//默认修改时
         case CZWRowObjEditStatusNeedRecount:{
             BOOL canEdit = [self czw_tableView:tableView canEditRowObj:rowObj];
             if (canEdit) {
@@ -295,7 +316,12 @@
  */
 - (BOOL)tableView:(CZWTableView *)tableView checkCanMoveRowAtIndexPath:(NSIndexPath *)indexPath{
     CZWRowObj * rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    switch (rowObj.canMove) {
+    if (rowObj.usePriorityMoveStatus) {//主动修改时
+        rowObj.usePriorityMoveStatus = NO;
+        return rowObj.canMove;
+    }
+    
+    switch (rowObj.canMove) {//默认修改时
         case CZWRowObjMoveStatusNeedRecount:{
             BOOL canMove = [self czw_tableView:tableView canMoveRowObj:rowObj];
             if (canMove) {

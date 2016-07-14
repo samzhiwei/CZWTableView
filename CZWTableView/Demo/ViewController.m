@@ -89,9 +89,15 @@
 }
 - (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj atIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    obj.cellHeightCorrection = 30;
-    obj.needRecountCellHeight = YES;
-    [tableView refreshRowObjIndexPath:indexPath];
+    if ([obj isMemberOfClass:[CZWTeather class]]) {
+        CZWTeather *teatherObj = (CZWTeather *)obj;
+        teatherObj.workNumber = @2000;
+        [obj updateCellStatus:^(CZWRowObj *rowObj) {
+            rowObj.cellHeight = 100;
+        }];
+       
+    }
+
 }
 
 
