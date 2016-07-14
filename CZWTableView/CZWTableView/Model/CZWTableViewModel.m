@@ -9,10 +9,7 @@
 #import "CZWTableViewModel.h"
 #import <objc/runtime.h>
 @interface CZWTableViewModel ()
-/**
- *  必须是二维数组
- */
-@property (strong, nonatomic) NSMutableArray<CZWSectionObj *>* dataArray;
+
 @end
 
 @implementation CZWTableViewModel
@@ -65,24 +62,24 @@
     return nil;
 }
 
-- (void)exchangeObj:(CZWRowObj *)objOne obj:(CZWRowObj *)objTwo{
-    NSIndexPath *one = [self indexPathOfRowObj:objOne];
-    NSIndexPath *two = [self indexPathOfRowObj:objTwo];
-    if (one.section == two.section) {
-        CZWSectionObj *secOne = [self sectionObjectAtIndex:one.section];
-        [secOne.rowArray exchangeObjectAtIndex:one.row withObjectAtIndex:two.row];
-    } else {
-        CZWSectionObj *secOne = [self sectionObjectAtIndex:one.section];
-        CZWSectionObj *secTwo = [self sectionObjectAtIndex:two.section];
-        [secOne.rowArray replaceObjectAtIndex:one.row withObject:objTwo];
-        [secTwo.rowArray replaceObjectAtIndex:two.row withObject:objOne];
-    }
+
+- (void)moveObjAtIndexPath:(NSIndexPath *)indexPathOne toIndexPath:(NSIndexPath *)indexPathTwo{
+    CZWRowObj *one = [self objectForRowAtIndexPath:indexPathOne];
+    CZWSectionObj *insertSecObj = [self sectionObjectAtIndex:indexPathTwo.section];
+    [insertSecObj.rowArray insertObject:one atIndex:indexPathTwo.row];
+    
+    CZWSectionObj *removeSecObj = [self sectionObjectAtIndex:indexPathOne.section];
+    [removeSecObj.rowArray removeObject:one];
 }
 
-- (void)exchangeIndexPath:(NSIndexPath *)indexPathOne toIndexPath:(NSIndexPath *)indexPathTwo{
-    CZWRowObj *one = [self objectForRowAtIndexPath:indexPathOne];
-    CZWRowObj *two = [self objectForRowAtIndexPath:indexPathTwo];
-    [self exchangeObj:one obj:two];
+- (void)deleteObjAtIndexPath:(NSIndexPath *)indexPath{
+    CZWSectionObj *removeSecObj = [self sectionObjectAtIndex:indexPath.section];
+    [removeSecObj.rowArray removeObjectAtIndex:indexPath.row];
+}
+
+- (void)insertObj:(CZWRowObj *)insertRowObj AtIndexPath:(NSIndexPath *)indexPath{
+    CZWSectionObj *insertSecObj = [self sectionObjectAtIndex:indexPath.section];
+    [insertSecObj.rowArray insertObject:insertRowObj atIndex:indexPath.row];
 }
 
 - (NSIndexPath *)indexPathOfRowObj:(CZWRowObj *)obj{

@@ -12,6 +12,10 @@
 #import "CZWSectionObj.h"
 #import "CZWRowObj.h"
 @interface CZWTableViewModel : NSObject <CZWTableViewModelProtocol>
+/**
+ *  必须是二维数组
+ */
+@property (strong, nonatomic) NSMutableArray<CZWSectionObj *>* dataArray;
 
 - (instancetype)initWithData:(NSMutableArray<CZWSectionObj *>*)dataArray;
 
@@ -34,9 +38,12 @@
 - (CZWRowObj *)objectForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - 操作
-- (void)exchangeObj:(CZWRowObj *)objOne obj:(CZWRowObj *)objTwo;
 
-- (void)exchangeIndexPath:(NSIndexPath *)indexPathOne toIndexPath:(NSIndexPath *)indexPathTwo;
+- (void)moveObjAtIndexPath:(NSIndexPath *)indexPathOne toIndexPath:(NSIndexPath *)indexPathTwo;
+
+- (void)deleteObjAtIndexPath:(NSIndexPath *)indexPath;
+
+- (void)insertObj:(CZWRowObj *)insertRowObj AtIndexPath:(NSIndexPath *)indexPath;
 
 
 @end

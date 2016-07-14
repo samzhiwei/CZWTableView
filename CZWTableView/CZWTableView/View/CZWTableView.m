@@ -9,6 +9,7 @@
 #import "CZWTableView.h"
 
 @implementation CZWTableView
+@synthesize model = _model;
 #pragma mark - optional override
 /**
  *  可以给子类重写初始化设定
@@ -128,6 +129,9 @@
     }
 }
 
+- (void)removeRelatedModel{
+    _model = nil;
+}
 
 - (void)pastDelegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
     self.delegate = delegate;

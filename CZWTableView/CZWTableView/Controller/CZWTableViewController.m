@@ -70,6 +70,17 @@
     return nil;
 }
 
+//编辑操作
+- (void)cellEditingStyleNone:(NSIndexPath *)noneIndexPath{
+    
+}
+
+- (CZWRowObj *)cellEditingStyleInsert:(NSIndexPath *)insertIndexPath{
+    @throw [NSException exceptionWithName:@"insertCell action must override this method"
+                                   reason:[NSString stringWithFormat:@"Didn't override this method %s in subClass", __FUNCTION__]
+                                 userInfo:nil];
+}
+
 
 #pragma mark - initialize
 
@@ -154,22 +165,26 @@
 }
 
 - (void)tableView:(CZWTableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    CZWTableViewModel *model = [self getModelFromTableView:tableView];
     switch (editingStyle) {
-        case UITableViewCellEditingStyleNone:
+        case UITableViewCellEditingStyleNone:{
+            [self cellEditingStyleNone:indexPath];
             break;
-        case UITableViewCellEditingStyleDelete:{
-            
         }
+        case UITableViewCellEditingStyleDelete:{
+            [model deleteObjAtIndexPath:indexPath];
             break;
-        case UITableViewCellEditingStyleInsert:
+        }
+        case UITableViewCellEditingStyleInsert:{
+            [model insertObj:[self cellEditingStyleInsert:indexPath] AtIndexPath:indexPath];
             break;
+        }
     }
 }
 
-
 - (void)tableView:(CZWTableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     CZWTableViewModel *model = [self getModelFromTableView:tableView];
-    [model exchangeIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
+    [model moveObjAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
 }
 #pragma 不重写就自动按照设置创建
 - (NSString *)tableView:(CZWTableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -247,7 +262,7 @@
  */
 - (CZWTableViewModel *)checkModelCache:(CZWTableView *)tableView{
     if (!tableView.model) {
-        tableView.model = [self createModel:tableView];
+        [tableView setValue:[self createModel:tableView] forKey:@"model"];
     }
     return tableView.model;
 }
