@@ -16,8 +16,9 @@
  *  必须是二维数组
  */
 @property (strong, nonatomic) NSMutableArray<CZWSectionObj *>* dataArray;
+@property (copy, nonatomic, readonly) NSString *messageChannel;
 
-- (instancetype)initWithData:(NSMutableArray<CZWSectionObj *>*)dataArray;
+- (instancetype)initWithData:(NSMutableArray<CZWSectionObj *>*)dataArray messageChannel:(NSString *)name;
 
 /**
  *  自动计算方便调用
@@ -44,6 +45,8 @@
 - (void)deleteObjAtIndexPath:(NSIndexPath *)indexPath;
 
 - (void)insertObj:(CZWRowObj *)insertRowObj AtIndexPath:(NSIndexPath *)indexPath;
+
+- (void)replaceObjAtIndexPath:(NSIndexPath *)indexPath withObj:(CZWRowObj *)rowObj;
 
 
 @end

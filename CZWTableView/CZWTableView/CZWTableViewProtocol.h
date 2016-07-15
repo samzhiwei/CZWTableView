@@ -13,6 +13,8 @@
  *  为解耦而设
  */
 #define ntkModelUpdate @"ntkModelUpdate"
+#define eNSIndexPath(section,row) [NSIndexPath indexPathForRow:row inSection:section]
+#define eNSIndexSet(section) [NSIndexSet indexSetWithIndex:section]
 @protocol CZWTableViewCellProtocol <NSObject>
 @required
 /**
@@ -29,7 +31,9 @@
 @protocol CZWTableViewModelProtocol <NSObject>
 @required
 
-- (void)updateModel:(id)value;
+- (void)updateRowObj:(id)value;
+
+- (void)updateSectionObj:(id)value;
 
 @end
 

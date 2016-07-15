@@ -19,7 +19,8 @@
 
 
 @interface CZWTableView : UITableView
-@property (weak, nonatomic, readonly) id <CZWTableViewModelProtocol> model;//只左缓存用(可弃用),
+//@property (weak, nonatomic, readonly) id <CZWTableViewModelProtocol> model;//只左缓存用(可弃用),
+
 /**
  *  约束创建
  */
@@ -40,5 +41,11 @@
 - (void)registerCellClasses:(NSArray <Class>*)classes;
 - (void)registerCellNibs:(NSArray <NSString *>*)nibNames;
 
-- (void)removeRelatedModel;
+
+/**
+ *  注册model消息传递;
+ */
+- (void)addModelMessageChannel:(NSString *)name;
+
+#pragma mark -  reload tableView
 @end

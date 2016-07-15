@@ -59,7 +59,7 @@
     
 }
 
-- (void)addSwipeGestureRecognizer{
+- (void)addBackSwipeGestureRecognizer{
     //右滑动手势
     if (!_swipe) {
         _swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self.navigationController action:@selector(popBackwordViewController)];
@@ -68,7 +68,7 @@
     [self.view addGestureRecognizer:_swipe];
 }
 
-- (void)removeSwipeGestureRecognizer{
+- (void)removeBackSwipeGestureRecognizer{
     if (_swipe) {
         [self.view removeGestureRecognizer:_swipe];
     }

@@ -14,6 +14,7 @@
 #import "CZWStudentCell.h"
 #import "CZWTeatherCell.h"
 #import "CZWSchoolCell.h"
+#define kkk @"kkk"
 @interface ViewController ()
 @property (strong, nonatomic) CZWTableViewModel *firstModel;
 @property (strong, nonatomic) CZWTableViewModel *secondModel;
@@ -47,7 +48,7 @@
             }
             [array addObject:array1];
         }
-        _firstModel = [[CZWTableViewModel alloc]initWithData:array];
+        _firstModel = [[CZWTableViewModel alloc]initWithData:array messageChannel:kkk];
     }
     return _firstModel;
 }
@@ -80,6 +81,7 @@
 - (CZWTableViewModel *)createModel:(CZWTableView *)tableView{
     NSLog(@"%s",__FUNCTION__);
     if (tableView.tag == 1) {
+        [tableView addModelMessageChannel:kkk];
         return self.firstModel;
     } else if (tableView.tag == 2) {
         return self.secondModel;
@@ -89,15 +91,9 @@
 }
 - (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj atIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if ([obj isMemberOfClass:[CZWTeather class]]) {
-        CZWTeather *teatherObj = (CZWTeather *)obj;
-        teatherObj.workNumber = @2000;
-        [obj updateCellStatus:^(CZWRowObj *rowObj) {
-            rowObj.cellHeight = 100;
-        }];
-       
-    }
-
+    CZWSectionObj *secObj = _firstModel.dataArray[0];
+    [secObj updateSectionStatus:^(id<CZWTableViewModelProtocol> model) {
+    }];
 }
 
 

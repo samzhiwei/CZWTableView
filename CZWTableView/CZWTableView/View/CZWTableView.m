@@ -9,7 +9,7 @@
 #import "CZWTableView.h"
 
 @implementation CZWTableView
-@synthesize model = _model;
+//@synthesize model = _model;
 #pragma mark - optional override
 /**
  *  可以给子类重写初始化设定
@@ -19,7 +19,7 @@
     self.showsVerticalScrollIndicator = YES;
     self.showsHorizontalScrollIndicator = NO;
     self.allowsMultipleSelection = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUI:) name:ntkModelUpdate object:nil];
+    
 }
 
 #pragma mark - Initialize
@@ -48,7 +48,7 @@
 }
 
 - (void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:ntkModelUpdate object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -129,9 +129,13 @@
     }
 }
 
-- (void)removeRelatedModel{
-    _model = nil;
+- (void)addModelMessageChannel:(NSString *)name{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUI:) name:name object:nil];
 }
+
+//- (void)removeRelatedModel{
+//    _model = nil;
+//}
 
 - (void)pastDelegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
     self.delegate = delegate;
@@ -139,11 +143,18 @@
 }
 
 - (void)refreshUI:(NSNotification *)noti{
-    NSIndexPath *indexPath = [noti.userInfo objectForKey:@"indexPath"];
-    //[self beginUpdates];
-    [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    //[self endUpdates];
+    if ([noti.userInfo.allKeys containsObject:@"indexPath"]) {
+        NSIndexPath *indexPath = [noti.userInfo objectForKey:@"indexPath"];
+        //[self beginUpdates];
+        [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        //[self endUpdates];
+    } else if ([noti.userInfo.allKeys containsObject:@"section"]) {
+        NSNumber *section = [noti.userInfo objectForKey:@"section"];
+        [self reloadSections:[NSIndexSet indexSetWithIndex:[section integerValue]] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    
 }
+
 
 
 

@@ -15,8 +15,8 @@
 @implementation CZWTableViewController
 #pragma mark - must override
 /**
- *  子类必须重写，子类必须自己强持有model和view;有子类自己控制model和view的生命周期
- *  执行一次后CZWTableView会弱持有自己的model;只有!model 时会重新调用询问
+ *  子类必须重写，子类必须自己强持有model和view;由子类自己控制model和view的生命周期
+ *  会被多次调用，不要做任何初始化动作。(缓存方案待定)
  */
 - (CZWTableViewModel * __nonnull)createModel:(CZWTableView *)tableView{
     //没有重写就会抛出异常
@@ -24,7 +24,7 @@
                                    reason:[NSString stringWithFormat:@"Didn't override this method %s in subClass", __FUNCTION__]
                                  userInfo:nil];
     //eg.
-    return [[CZWTableViewModel alloc]initWithData:nil];
+    //return [[CZWTableViewModel alloc]initWithData:nil messageChannel:@"kkk"];
 }
 
 #pragma mark - optional override
@@ -56,30 +56,31 @@
 //UITableViewDelegate
 - (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj atIndexPath:(NSIndexPath *)indexPath{}
 - (void)czw_tableView:(CZWTableView *)tableView didDeselectRowObj:(CZWRowObj *)rowObj atIndexPath:(NSIndexPath *)indexPath{}
-- (CGFloat)czw_tableView:(CZWTableView *)tableView heightForHeaderInSectionObj:(CZWSectionObj *)secObj{
+- (CGFloat)czw_tableView:(CZWTableView *)tableView heightForHeaderInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section{
     return 0;
 }
-- (CGFloat)czw_tableView:(CZWTableView *)tableView heightForFooterInSectionObj:(CZWSectionObj *)secObj{
+- (CGFloat)czw_tableView:(CZWTableView *)tableView heightForFooterInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section{
     return 0;
 }
-- (nullable UIView *)czw_tableView:(CZWTableView *)tableView viewForHeaderInSectionObj:(CZWSectionObj *)secObj{
+- (nullable UIView *)czw_tableView:(CZWTableView *)tableView viewForHeaderInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section{
     return nil;
 }
 
-- (nullable UIView *)czw_tableView:(CZWTableView *)tableView viewForFooterInSectionObj:(CZWSectionObj *)secObj{
+- (nullable UIView *)czw_tableView:(CZWTableView *)tableView viewForFooterInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section{
     return nil;
 }
 
 //编辑操作
-- (void)cellEditingStyleNone:(NSIndexPath *)noneIndexPath{
-    
-}
-
-- (CZWRowObj *)cellEditingStyleInsert:(NSIndexPath *)insertIndexPath{
+- (void)tableView:(CZWTableView *)tableView cellEditingStyleDidNoneObjAtIndexPath:(NSIndexPath *)indexPath{}
+- (void)tableView:(CZWTableView *)tableView cellEditingStyleDidDeleteObjAtIndexPath:(NSIndexPath *)deleteIndexPath{}
+- (CZWRowObj *)tableView:(CZWTableView *)tableView cellEditingStyleInsert:(NSIndexPath *)insertIndexPath{
     @throw [NSException exceptionWithName:@"insertCell action must override this method"
                                    reason:[NSString stringWithFormat:@"Didn't override this method %s in subClass", __FUNCTION__]
                                  userInfo:nil];
 }
+- (void)tableView:(CZWTableView *)tableView cellEditingStyleDidInsert:(NSIndexPath *)indexPath{};
+- (void)tableView:(CZWTableView *)tableView didMoveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{}
+
 
 
 #pragma mark - initialize
@@ -168,15 +169,17 @@
     CZWTableViewModel *model = [self getModelFromTableView:tableView];
     switch (editingStyle) {
         case UITableViewCellEditingStyleNone:{
-            [self cellEditingStyleNone:indexPath];
+            [self tableView:tableView cellEditingStyleDidNoneObjAtIndexPath:indexPath];
             break;
         }
         case UITableViewCellEditingStyleDelete:{
             [model deleteObjAtIndexPath:indexPath];
+            [self tableView:tableView cellEditingStyleDidDeleteObjAtIndexPath:indexPath];
             break;
         }
         case UITableViewCellEditingStyleInsert:{
-            [model insertObj:[self cellEditingStyleInsert:indexPath] AtIndexPath:indexPath];
+            [model insertObj:[self tableView:tableView cellEditingStyleInsert:indexPath] AtIndexPath:indexPath];
+            [self tableView:tableView cellEditingStyleDidInsert:indexPath];
             break;
         }
     }
@@ -185,6 +188,7 @@
 - (void)tableView:(CZWTableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     CZWTableViewModel *model = [self getModelFromTableView:tableView];
     [model moveObjAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
+    [self tableView:tableView didMoveRowAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
 }
 #pragma 不重写就自动按照设置创建
 - (NSString *)tableView:(CZWTableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -211,22 +215,22 @@
 #pragma 以下的可以重写原生也可以重写自定义czw_开头的
 - (CGFloat)tableView:(CZWTableView *)tableView heightForHeaderInSection:(NSInteger)section{
     CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return [self czw_tableView:tableView heightForHeaderInSectionObj:secObj];
+    return [self czw_tableView:tableView heightForHeaderInSectionObj:secObj inSection:section];
 }
 
 - (CGFloat)tableView:(CZWTableView *)tableView heightForFooterInSection:(NSInteger)section{
     CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return [self czw_tableView:tableView heightForFooterInSectionObj:secObj];
+    return [self czw_tableView:tableView heightForFooterInSectionObj:secObj inSection:section];
 }
 
 - (nullable UIView *)tableView:(CZWTableView *)tableView viewForHeaderInSection:(NSInteger)section{
     CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return [self czw_tableView:tableView viewForHeaderInSectionObj:secObj];
+    return [self czw_tableView:tableView viewForHeaderInSectionObj:secObj inSection:section];
 }
 
 - (nullable UIView *)tableView:(CZWTableView *)tableView viewForFooterInSection:(NSInteger)section{
     CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return [self czw_tableView:tableView viewForFooterInSectionObj:secObj];
+    return [self czw_tableView:tableView viewForFooterInSectionObj:secObj inSection:section];
 }
 
 - (void)tableView:(CZWTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -258,13 +262,13 @@
 
 #pragma mark - Cache
 /**
- *  model cache
+ *  model cache(缓存方案待定。。)
  */
 - (CZWTableViewModel *)checkModelCache:(CZWTableView *)tableView{
-    if (!tableView.model) {
-        [tableView setValue:[self createModel:tableView] forKey:@"model"];
-    }
-    return tableView.model;
+//    if (!tableView.model) {
+//        [tableView setValue:[self createModel:tableView] forKey:@"model"];
+//    }
+    return [self createModel:tableView];
 }
 
 /**
@@ -282,30 +286,21 @@
 - (CGFloat)tableView:(CZWTableView *)tableView checkCacheRowHeightForObject:(CZWRowObj *)rowObj{
     CGFloat height = 0.0;
 
-    if (rowObj.cellHeight == CellNeedRecountHeight) {    //通过cell自己计算返回高度
+    if ([rowObj.cellHeight floatValue]== CellNeedRecountHeight) {    //通过cell自己计算返回高度
         Class cellClass = [self checkObjCellClassCache:tableView object:rowObj];
-        CGFloat cellHeight = [cellClass tableView:tableView rowHeightForObject:rowObj];
-        rowObj.cellHeight = cellHeight;
-        height = rowObj.cellHeight;
-        return height;
-    }
-    if (rowObj.usePriorityCellHeight) {//主动修改
-        height = rowObj.cellHeight;
-        rowObj.usePriorityCellHeight = NO;
-        return height;
+        CGFloat cellHeight = [cellClass tableView:tableView rowHeightForObject:rowObj] + rowObj.priorityCellHeight;
+        [rowObj setValue:[NSNumber numberWithFloat:cellHeight] forKey:@"cellHeight"];
+        height = cellHeight;
     }
     
-    return rowObj.cellHeight;
+    return [rowObj.cellHeight floatValue];
 }
 /**
  *  Cell canEdit cache
  */
 - (BOOL)tableView:(CZWTableView *)tableView checkCanEditRowAtIndexPath:(NSIndexPath *)indexPath{
     CZWRowObj * rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    if (rowObj.usePriorityEditStatus) {//主动修改时
-        rowObj.usePriorityEditStatus = NO;
-        return rowObj.canEdit;
-    }
+    
     switch (rowObj.canEdit) {//默认修改时
         case CZWRowObjEditStatusNeedRecount:{
             BOOL canEdit = [self czw_tableView:tableView canEditRowObj:rowObj];
@@ -331,10 +326,6 @@
  */
 - (BOOL)tableView:(CZWTableView *)tableView checkCanMoveRowAtIndexPath:(NSIndexPath *)indexPath{
     CZWRowObj * rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    if (rowObj.usePriorityMoveStatus) {//主动修改时
-        rowObj.usePriorityMoveStatus = NO;
-        return rowObj.canMove;
-    }
     
     switch (rowObj.canMove) {//默认修改时
         case CZWRowObjMoveStatusNeedRecount:{
@@ -356,6 +347,8 @@
             break;
     }
 }
+
+
 
 
 @end

@@ -13,6 +13,6 @@
 /**
  *  添加左划返回手势
  */
-- (void)addSwipeGestureRecognizer;
-- (void)removeSwipeGestureRecognizer;
+- (void)addBackSwipeGestureRecognizer;
+- (void)removeBackSwipeGestureRecognizer;
 @end

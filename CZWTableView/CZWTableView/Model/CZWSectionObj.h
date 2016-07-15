@@ -18,5 +18,9 @@
  *  设置后就按照系统的FooterView生成
  */
 @property (copy, nonatomic) NSString *titleForFooter;
+
+@property (weak, nonatomic, readonly) id <CZWTableViewModelProtocol> model;
 - (instancetype)initWithItemArray:(NSArray <CZWRowObj*>*)items;
+
+- (void)updateSectionStatus:(void (^)(id <CZWTableViewModelProtocol> model))status;
 @end

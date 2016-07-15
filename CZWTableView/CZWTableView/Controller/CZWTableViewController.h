@@ -25,4 +25,6 @@
  *  自动绑定tableView的delegate和dataSource
  */
 - (instancetype)initWithTableView:(CZWTableView *)tableVIew;
+
+
 @end
