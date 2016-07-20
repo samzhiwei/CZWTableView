@@ -7,8 +7,8 @@
 //
 
 
-#import "CZWTableViewProtocol.h"
-@interface CZWStudentCell : UITableViewCell <CZWTableViewCellProtocol>
+#import "CZWTableViewCell.h"
+@interface CZWStudentCell : CZWTableViewCell 
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (weak, nonatomic) IBOutlet UIButton *button;
 @property (weak, nonatomic) IBOutlet UIImageView *image;

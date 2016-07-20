@@ -9,7 +9,7 @@
 #import "CZWSectionObj.h"
 
 @implementation CZWSectionObj
-@synthesize model = _model;
+@synthesize rowArrayCount = _rowArrayCount;
 - (instancetype)init{
     self = [super init];
     if (self) {
@@ -17,7 +17,6 @@
         self.rowArray = [[NSMutableArray alloc]init];
         self.titleForFooter = nil;
         self.titleForHeader = nil;
-        _model = nil;
     }
     return self;
 }
@@ -30,16 +29,8 @@
     return self;
 }
 
-- (void)updateSectionStatus:(void (^)(id <CZWTableViewModelProtocol> model))status{
-    if (status) {
-        status(_model);
-        if (_model) {
-            for (CZWRowObj *rowObj in _rowArray) {
-                [rowObj updateObjStatus];
-            }
-            [_model updateSectionObj :self];
-        }
-    }
+- (NSUInteger)rowArrayCount{
+    return self.rowArray.count;
 }
 
 @end

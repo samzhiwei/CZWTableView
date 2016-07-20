@@ -47,12 +47,6 @@
     return self;
 }
 
-- (void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
-
 #pragma mark - Api
 
 - (instancetype)initWithRegisterCellClasses:(NSArray <Class>*)classes{
@@ -129,9 +123,9 @@
     }
 }
 
-- (void)addModelMessageChannel:(NSString *)name{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUI:) name:name object:nil];
-}
+//- (void)addModelMessageChannel:(NSString *)name{
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUI:) name:name object:nil];
+//}
 
 //- (void)removeRelatedModel{
 //    _model = nil;
@@ -142,18 +136,18 @@
     self.dataSource = dataSource;
 }
 
-- (void)refreshUI:(NSNotification *)noti{
-    if ([noti.userInfo.allKeys containsObject:@"indexPath"]) {
-        NSIndexPath *indexPath = [noti.userInfo objectForKey:@"indexPath"];
-        //[self beginUpdates];
-        [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        //[self endUpdates];
-    } else if ([noti.userInfo.allKeys containsObject:@"section"]) {
-        NSNumber *section = [noti.userInfo objectForKey:@"section"];
-        [self reloadSections:[NSIndexSet indexSetWithIndex:[section integerValue]] withRowAnimation:UITableViewRowAnimationNone];
-    }
-    
-}
+//- (void)refreshUI:(NSNotification *)noti{
+//    if ([noti.userInfo.allKeys containsObject:@"indexPath"]) {
+//        NSIndexPath *indexPath = [noti.userInfo objectForKey:@"indexPath"];
+//        //[self beginUpdates];
+//        [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//        //[self endUpdates];
+//    } else if ([noti.userInfo.allKeys containsObject:@"section"]) {
+//        NSNumber *section = [noti.userInfo objectForKey:@"section"];
+//        [self reloadSections:[NSIndexSet indexSetWithIndex:[section integerValue]] withRowAnimation:UITableViewRowAnimationNone];
+//    }
+//    
+//}
 
 
 

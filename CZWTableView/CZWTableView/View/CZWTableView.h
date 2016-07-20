@@ -14,12 +14,11 @@
  *  PS.如果sectionObj有对应的自定义View。系统的header和footer会默认不显示,sectionObj的titleForHeader和titleForFooter会失效。
  */
 
-#import "CZWTableViewProtocol.h"
-
+#import <UIKit/UIKit.h>
+#import "CZWTableViewCell.h"
 
 
 @interface CZWTableView : UITableView
-//@property (weak, nonatomic, readonly) id <CZWTableViewModelProtocol> model;//只左缓存用(可弃用),
 
 /**
  *  约束创建
@@ -45,7 +44,7 @@
 /**
  *  注册model消息传递;
  */
-- (void)addModelMessageChannel:(NSString *)name;
+//- (void)addModelMessageChannel:(NSString *)name;
 
 #pragma mark -  reload tableView
 @end

@@ -6,9 +6,9 @@
 //  Copyright © 2016年 Tianqu. All rights reserved.
 //
 
-#import "CZWTableViewProtocol.h"
+#import "CZWTableViewCell.h"
 
-@interface CZWSchoolCell : UITableViewCell <CZWTableViewCellProtocol>
+@interface CZWSchoolCell : CZWTableViewCell 
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (weak, nonatomic) IBOutlet UIButton *button;
 

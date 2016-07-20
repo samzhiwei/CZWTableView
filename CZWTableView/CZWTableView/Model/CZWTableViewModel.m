@@ -15,12 +15,12 @@
 @implementation CZWTableViewModel
 @synthesize sectionCount = _sectionCount;
 @synthesize objectCount = _objectCount;
-@synthesize messageChannel = _messageChannel;
-- (instancetype)initWithData:(NSMutableArray<CZWSectionObj *>*)dataArray messageChannel:(NSString *)name{
+//@synthesize messageChannel = _messageChannel;
+- (instancetype)initWithData:(NSMutableArray<CZWSectionObj *>*)dataArray{
     self = [super init];
     if (self) {
         self.dataArray = dataArray;
-        _messageChannel = name;
+        //_messageChannel = name;
     }
     return self;
 }
@@ -30,16 +30,14 @@
     NSUInteger count = 0;
     for (CZWSectionObj *secObj in dataArray) {
         if (secObj) {
-            [secObj setValue:self forKey:@"model"];//绑定更新信息反馈时候用
             count += secObj.rowArray.count;
-            for (CZWRowObj *rowObj in secObj.rowArray) {
-                [rowObj setValue:self forKey:@"model"];//绑定更新信息反馈时候用
-            }
         }
     }
     _sectionCount = dataArray.count;
     _objectCount = count;
-    
+    [dataArray enumerateObjectsUsingBlock:^(CZWSectionObj * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+    }];
 }
 
 - (NSUInteger)sectionCount{
@@ -81,29 +79,44 @@
     return nil;
 }
 
-
-- (void)moveObjAtIndexPath:(NSIndexPath *)indexPathOne toIndexPath:(NSIndexPath *)indexPathTwo{
-    CZWRowObj *one = [self objectForRowAtIndexPath:indexPathOne];
-    CZWSectionObj *insertSecObj = [self sectionObjectAtIndex:indexPathTwo.section];
-    CZWSectionObj *removeSecObj = [self sectionObjectAtIndex:indexPathOne.section];
-    [removeSecObj.rowArray removeObject:one];
-    [insertSecObj.rowArray insertObject:one atIndex:indexPathTwo.row];
-    
+- (CZWRowObj *)firstObjectInSection:(NSInteger)section{
+    CZWSectionObj *sectionObj = [self.dataArray objectAtIndex:section];
+    return sectionObj.rowArray.firstObject;
 }
 
-- (void)deleteObjAtIndexPath:(NSIndexPath *)indexPath{
-    CZWSectionObj *removeSecObj = [self sectionObjectAtIndex:indexPath.section];
-    [removeSecObj.rowArray removeObjectAtIndex:indexPath.row];
+- (CZWRowObj *)lastObjectInSection:(NSInteger)section{
+    CZWSectionObj *sectionObj = [self.dataArray objectAtIndex:section];
+    return sectionObj.rowArray.lastObject;
 }
 
-- (void)insertObj:(CZWRowObj *)insertRowObj AtIndexPath:(NSIndexPath *)indexPath{
-    CZWSectionObj *insertSecObj = [self sectionObjectAtIndex:indexPath.section];
-    [insertSecObj.rowArray insertObject:insertRowObj atIndex:indexPath.row];
+#pragma mark - 遍历
+- (void)enumerateRowObjectsInSection:(NSUInteger)section usingBlock:(BOOL (^)(id obj, NSIndexPath *indexPath))block{
+    CZWSectionObj *secObj = [self sectionObjectAtIndex:section];
+    for (NSUInteger j = 0; j < secObj.rowArrayCount; j ++) {
+        CZWRowObj *rowObj = [secObj.rowArray objectAtIndex:j];
+        BOOL stop = block(rowObj,[NSIndexPath indexPathForRow:j inSection:section]);
+        if (stop) {
+            return;
+        }
+    }
 }
 
-- (void)replaceObjAtIndexPath:(NSIndexPath *)indexPath withObj:(CZWRowObj *)rowObj{
-    CZWSectionObj *secObj = [self sectionObjectAtIndex:indexPath.section];
-    [secObj.rowArray replaceObjectAtIndex:indexPath.row withObject:rowObj];
+- (void)enumerateRowObjectsUsingBlock:(BOOL (^)(id obj, NSIndexPath *indexPath))block{
+    for (NSUInteger i = 0; i < self.sectionCount; i ++) {
+        [self enumerateRowObjectsInSection:i usingBlock:^BOOL(id obj, NSIndexPath *indexPath) {
+            return block(obj,indexPath);
+        }];
+    }
+}
+
+- (void)enumerateSectionObjectsUsingBlock:(BOOL (^)(id obj, NSUInteger section))block{
+    for (NSUInteger i = 0; i < self.sectionCount ; i ++) {
+        CZWSectionObj *secObj = [self sectionObjectAtIndex:i];
+        BOOL stop = block(secObj,i);
+        if (stop) {
+            return;
+        }
+    }
 }
 
 - (NSInteger)sectionOfSectionObj:(CZWSectionObj *)obj{
@@ -130,26 +143,35 @@
     return nil;
 }
 
-#pragma mark - send Message
+#pragma mark - 操作
 
-- (void)updateSectionObj:(CZWSectionObj *)secObj{
-    NSInteger section = [self sectionOfSectionObj:secObj];
-    NSNumber *sectionNum = [NSNumber numberWithInteger:section];
-    if (_messageChannel) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:_messageChannel object:nil userInfo:@{@"section" : sectionNum}];
-    }
+- (void)moveObjAtIndexPath:(NSIndexPath *)indexPathOne toIndexPath:(NSIndexPath *)indexPathTwo{
+    CZWRowObj *one = [self objectForRowAtIndexPath:indexPathOne];
+    CZWSectionObj *insertSecObj = [self sectionObjectAtIndex:indexPathTwo.section];
+    CZWSectionObj *removeSecObj = [self sectionObjectAtIndex:indexPathOne.section];
+    [removeSecObj.rowArray removeObject:one];
+    [insertSecObj.rowArray insertObject:one atIndex:indexPathTwo.row];
     
 }
 
-- (void)updateRowObj:(CZWRowObj *)rowObj{
-    NSIndexPath *indexPath = [self indexPathOfRowObj:rowObj];
-    if (indexPath == nil) {
-        NSLog(@"地址比对失败");
-    }
-    if (_messageChannel) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:_messageChannel object:nil userInfo:@{@"indexPath" : indexPath}];
-    }
-    
+- (void)deleteObjAtIndexPath:(NSIndexPath *)indexPath{
+    CZWSectionObj *removeSecObj = [self sectionObjectAtIndex:indexPath.section];
+    [removeSecObj.rowArray removeObjectAtIndex:indexPath.row];
+}
+
+- (void)insertObj:(CZWRowObj *)insertRowObj AtIndexPath:(NSIndexPath *)indexPath{
+    CZWSectionObj *insertSecObj = [self sectionObjectAtIndex:indexPath.section];
+    [insertSecObj.rowArray insertObject:insertRowObj atIndex:indexPath.row];
+}
+
+- (void)replaceObjAtIndexPath:(NSIndexPath *)indexPath withObj:(CZWRowObj *)rowObj{
+    CZWSectionObj *secObj = [self sectionObjectAtIndex:indexPath.section];
+    [secObj.rowArray replaceObjectAtIndex:indexPath.row withObject:rowObj];
+}
+
+- (void)updateRowObjAtIndexPath:(NSIndexPath *)indexPath handler:(void (^)(CZWRowObj *rowObj))handler{
+    CZWRowObj *rowObj = [self objectForRowAtIndexPath:indexPath];
+    handler(rowObj);
 }
 
 

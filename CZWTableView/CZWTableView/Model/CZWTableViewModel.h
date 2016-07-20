@@ -8,17 +8,17 @@
 /**
  *  创建会强引用dataArray
  */
-#import "CZWTableViewProtocol.h"
+#import <Foundation/Foundation.h>
 #import "CZWSectionObj.h"
 #import "CZWRowObj.h"
-@interface CZWTableViewModel : NSObject <CZWTableViewModelProtocol>
+@interface CZWTableViewModel : NSObject
 /**
  *  必须是二维数组
  */
 @property (strong, nonatomic) NSMutableArray<CZWSectionObj *>* dataArray;
-@property (copy, nonatomic, readonly) NSString *messageChannel;
+//@property (copy, nonatomic, readonly) NSString *messageChannel;
 
-- (instancetype)initWithData:(NSMutableArray<CZWSectionObj *>*)dataArray messageChannel:(NSString *)name;
+- (instancetype)initWithData:(NSMutableArray<CZWSectionObj *>*)dataArray;
 
 /**
  *  自动计算方便调用
@@ -38,6 +38,17 @@
  */
 - (CZWRowObj *)objectForRowAtIndexPath:(NSIndexPath *)indexPath;
 
+- (CZWRowObj *)firstObjectInSection:(NSInteger)section;
+
+- (CZWRowObj *)lastObjectInSection:(NSInteger)section;
+
+#pragma mark - 遍历
+- (void)enumerateRowObjectsInSection:(NSUInteger)section usingBlock:(BOOL (^)(id obj, NSIndexPath *indexPath))block;
+
+- (void)enumerateRowObjectsUsingBlock:(BOOL (^)(id obj, NSIndexPath *indexPath))block;
+
+- (void)enumerateSectionObjectsUsingBlock:(BOOL (^)(id obj, NSUInteger section))block;
+
 #pragma mark - 操作
 
 - (void)moveObjAtIndexPath:(NSIndexPath *)indexPathOne toIndexPath:(NSIndexPath *)indexPathTwo;
@@ -47,6 +58,8 @@
 - (void)insertObj:(CZWRowObj *)insertRowObj AtIndexPath:(NSIndexPath *)indexPath;
 
 - (void)replaceObjAtIndexPath:(NSIndexPath *)indexPath withObj:(CZWRowObj *)rowObj;
+
+- (void)updateRowObjAtIndexPath:(NSIndexPath *)indexPath handler:(void (^)(CZWRowObj *rowObj))handler;
 
 
 @end

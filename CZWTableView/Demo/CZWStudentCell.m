@@ -21,4 +21,15 @@
     self.image.image = [UIImage imageNamed:[rowObj valueForKey:@"imageName"]];
     return self;
 }
+
++ (CGFloat)rowHeightForObject:(id)rowObj atIndexPath:(NSIndexPath *)indexPath{
+    return 44;
+}
+- (UITableViewCell *)bindingShowData:(id)rowObj atIndexPath:(NSIndexPath *)indexPath{
+    self.label.text = [rowObj valueForKey:@"name"];
+    NSNumber *age = [rowObj valueForKey:@"age"];
+    [self.button setTitle:[age stringValue] forState:UIControlStateNormal];
+    self.image.image = [UIImage imageNamed:[rowObj valueForKey:@"imageName"]];
+    return self;
+}
 @end

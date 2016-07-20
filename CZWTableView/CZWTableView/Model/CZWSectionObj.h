@@ -19,8 +19,8 @@
  */
 @property (copy, nonatomic) NSString *titleForFooter;
 
-@property (weak, nonatomic, readonly) id <CZWTableViewModelProtocol> model;
+@property (assign, nonatomic, readonly) NSUInteger rowArrayCount;
+
 - (instancetype)initWithItemArray:(NSArray <CZWRowObj*>*)items;
 
-- (void)updateSectionStatus:(void (^)(id <CZWTableViewModelProtocol> model))status;
 @end

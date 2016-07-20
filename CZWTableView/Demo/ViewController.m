@@ -48,7 +48,7 @@
             }
             [array addObject:array1];
         }
-        _firstModel = [[CZWTableViewModel alloc]initWithData:array messageChannel:kkk];
+        _firstModel = [[CZWTableViewModel alloc]initWithData:array];
     }
     return _firstModel;
 }
@@ -70,18 +70,17 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     self.tableView.frame = self.view.bounds;
-    [self addSwipeGestureRecognizer];
+    [self addBackSwipeGestureRecognizer];
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
-    [self removeSwipeGestureRecognizer];
+    [self removeBackSwipeGestureRecognizer];
 }
 
 - (CZWTableViewModel *)createModel:(CZWTableView *)tableView{
     NSLog(@"%s",__FUNCTION__);
     if (tableView.tag == 1) {
-        [tableView addModelMessageChannel:kkk];
         return self.firstModel;
     } else if (tableView.tag == 2) {
         return self.secondModel;
@@ -91,9 +90,6 @@
 }
 - (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj atIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    CZWSectionObj *secObj = _firstModel.dataArray[0];
-    [secObj updateSectionStatus:^(id<CZWTableViewModelProtocol> model) {
-    }];
 }
 
 
