@@ -27,15 +27,15 @@ static NSString * const kTextAlignmentKey = @"textAlignment";
 
 @implementation CZWTextView
 //@synthesize text = _text;
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        [self preparePlaceholder];
-        [self baseSetUp];
-    }
-    return self;
-}
+//- (instancetype)init
+//{
+//    self = [super init];
+//    if (self) {
+//        [self preparePlaceholder];
+//        [self baseSetUp];
+//    }
+//    return self;
+//}
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {

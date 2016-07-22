@@ -248,7 +248,7 @@
         [self didDequeueReusableHeader:headerView];
         return headerView;
     } else {
-        NSParameterAssert(NO);
+        //NSParameterAssert(NO);
         NSLog(@"cell Class isn't subclassOfClass CZWTableViewSectionHeader : %s",__FUNCTION__);
         return nil;
     }
@@ -264,7 +264,7 @@
         [self didDequeueReusableFooter:footerView];
         return footerView;
     } else {
-        NSParameterAssert(NO);
+        //NSParameterAssert(NO);
         NSLog(@"cell Class isn't subclassOfClass CZWTableViewSectionFooter : %s",__FUNCTION__);
         return nil;
     }

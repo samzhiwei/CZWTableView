@@ -42,6 +42,9 @@
 
 - (CZWRowObj *)lastObjectInSection:(NSInteger)section;
 
+- (NSIndexPath *)indexPathOfRowObj:(CZWRowObj *)obj;
+
+- (NSInteger)sectionOfSectionObj:(CZWSectionObj *)obj;
 #pragma mark - 遍历
 - (void)enumerateRowObjectsInSection:(NSUInteger)section usingBlock:(BOOL (^)(id obj, NSIndexPath *indexPath))block;
 

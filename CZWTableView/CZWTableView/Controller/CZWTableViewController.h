@@ -64,7 +64,7 @@
 - (void)czw_tableView:(CZWTableView *)tableView didDeselectRowObj:(CZWRowObj *)rowObj atIndexPath:(NSIndexPath *)indexPath;
 
 /**
- *  cell相应反馈
+ *  cell相应反馈,触发cell自身的triggerOff就能激发以下相应的方法
  */
 - (void)czw_tableView:(CZWTableView *)tableView rowObj:(CZWRowObj *)rowObj atIndexPath:(NSIndexPath *)indexPath cellDidTriggerBySender:(id)sender;
 - (void)czw_tableView:(CZWTableView *)tableView secObj:(CZWSectionObj *)secObj inSection:(NSInteger)section headerViewDidTriggerBySender:(id)sender;

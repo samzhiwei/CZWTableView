@@ -18,7 +18,7 @@
         self.rowArray = [[NSMutableArray alloc]init];
         self.titleForFooter = nil;
         self.titleForHeader = nil;
-        self.open = NO;
+        self.open = YES;
         _headerHeight = CellNeedRecountHeight;
         _footerHeight = CellNeedRecountHeight;
         _priorityHeaderHeight = 0.0;
