@@ -16,6 +16,8 @@
 
 #import <UIKit/UIKit.h>
 #import "CZWTableViewCell.h"
+#import "CZWTableViewSectionHeader.h"
+#import "CZWTableViewSectionFooter.h"
 
 
 @interface CZWTableView : UITableView
@@ -40,11 +42,12 @@
 - (void)registerCellClasses:(NSArray <Class>*)classes;
 - (void)registerCellNibs:(NSArray <NSString *>*)nibNames;
 
-
+- (void)registerSectionNibs:(NSArray <NSString*>*)nibNames;
+- (void)registerSectionClasses:(NSArray <Class>*)classes;
 /**
- *  注册model消息传递;
- */
-//- (void)addModelMessageChannel:(NSString *)name;
+*  必然可以返回一个不为nil的UITableViewHeaderFooterView
+*/
+- (UITableViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifier:(NSString *)identifier inSection:(NSInteger)section;
 
 #pragma mark -  reload tableView
 @end

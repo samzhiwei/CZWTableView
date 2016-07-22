@@ -32,7 +32,7 @@
  *  如果不重写这个方法就要按照
  *   "obj类名后加Cell为Cell的类名" 的命名规则命名
  */
-- (Class __nonnull)tableView:(CZWTableView *)tableView cellClassForObject:(CZWRowObj *)rowObj{
+- (Class)tableView:(CZWTableView *)tableView cellClassForObject:(CZWRowObj *)rowObj{
     
     Class rowObjClass = [rowObj class];
     NSString *rowObjClassStr = NSStringFromClass(rowObjClass);
@@ -40,6 +40,32 @@
     
     //eg.
     return NSClassFromString(cellClassStr);
+}
+
+/**
+ *  如果不重写这个方法就要按照
+ *   "secObj类名后加header为header的类名" 的命名规则命名
+ *  默认返回nil，返回nil时将没有headerView
+ */
+- (Class)tableView:(CZWTableView *)tableView sectionHeaderForSection:(CZWSectionObj *)secObj{
+//    Class rowObjClass = [secObj class];
+//    NSString *rowObjClassStr = NSStringFromClass(rowObjClass);
+//    NSString *cellClassStr = [rowObjClassStr stringByAppendingString:@"header"];
+//    return NSClassFromString(cellClassStr);
+    return nil;
+}
+
+/**
+ *  如果不重写这个方法就要按照
+ *   "secObj类名后加header为header的类名" 的命名规则命名
+ *  默认返回nil，返回nil时将没有headerView
+ */
+- (Class)tableView:(CZWTableView *)tableView sectionFooterForSection:(CZWSectionObj *)secObj{
+    //    Class rowObjClass = [secObj class];
+    //    NSString *rowObjClassStr = NSStringFromClass(rowObjClass);
+    //    NSString *cellClassStr = [rowObjClassStr stringByAppendingString:@"header"];
+    //    return NSClassFromString(cellClassStr);
+    return nil;
 }
 
 /**
@@ -52,22 +78,21 @@
 - (BOOL)czw_tableView:(CZWTableView *)tableView canMoveRowObj:(CZWRowObj *)obj{
     return YES;
 }
+
+- (void)didDequeueReusableCell:(CZWTableViewCell *)cell{};
+- (void)didDequeueReusableHeader:(CZWTableViewSectionHeader *)headerView{};
+- (void)didDequeueReusableFooter:(CZWTableViewSectionFooter *)footerView{};
+
 //UITableViewDelegate
 - (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj atIndexPath:(NSIndexPath *)indexPath{}
 - (void)czw_tableView:(CZWTableView *)tableView didDeselectRowObj:(CZWRowObj *)rowObj atIndexPath:(NSIndexPath *)indexPath{}
-- (CGFloat)czw_tableView:(CZWTableView *)tableView heightForHeaderInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section{
-    return 0;
-}
-- (CGFloat)czw_tableView:(CZWTableView *)tableView heightForFooterInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section{
-    return 0;
-}
-- (nullable UIView *)czw_tableView:(CZWTableView *)tableView viewForHeaderInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section{
-    return nil;
-}
 
-- (nullable UIView *)czw_tableView:(CZWTableView *)tableView viewForFooterInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section{
-    return nil;
-}
+/**
+ *  cell相应反馈
+ */
+- (void)czw_tableView:(CZWTableView *)tableView rowObj:(CZWRowObj *)rowObj atIndexPath:(NSIndexPath *)indexPath cellDidTriggerBySender:(id)sender{};
+- (void)czw_tableView:(CZWTableView *)tableView secObj:(CZWSectionObj *)secObj inSection:(NSInteger)section headerViewDidTriggerBySender:(id)sender{};
+- (void)czw_tableView:(CZWTableView *)tableView secObj:(CZWSectionObj *)secObj inSection:(NSInteger)section  footerViewDidTriggerBySender:(id)sender{};
 
 //编辑操作
 - (void)czw_tableView:(CZWTableView *)tableView cellEditingStyleDidNoneObjAtIndexPath:(NSIndexPath *)indexPath{}
@@ -131,7 +156,11 @@
 
 - (NSInteger)tableView:(CZWTableView *)tableView numberOfRowsInSection:(NSInteger)section {
     CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return secObj.rowArray.count;
+    if (secObj.open) {
+        return secObj.rowArrayCount;
+    } else {
+        return 0;
+    }
 }
 
 - (UITableViewCell *)tableView:(CZWTableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -140,8 +169,8 @@
     NSString *cellName = [NSString stringWithFormat:@"%s",class_getName(cellClass)];
     if ([cellClass isSubclassOfClass:[CZWTableViewCell class]]) {
         CZWTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath];
-        [cell didDequeueReusableCell];
-        [cell bindingShowData:rowObj atIndexPath:indexPath];
+        [cell bindingShowData:rowObj atIndexPath:indexPath delegate:self];
+        [self didDequeueReusableCell:cell];
         return cell;
     } else {
         NSLog(@"cell Class isn't subclassOfClass CZWTableViewCell : %s",__FUNCTION__);
@@ -184,16 +213,6 @@
     [model moveObjAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
     [self czw_tableView:tableView didMoveRowAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
 }
-#pragma 不重写就自动按照设置创建
-- (NSString *)tableView:(CZWTableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return secObj.titleForHeader;
-}
-
-- (NSString *)tableView:(CZWTableView *)tableView titleForFooterInSection:(NSInteger)section {
-    CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return secObj.titleForFooter;
-}
 
 #pragma mark - UITableViewDelegate
 /**
@@ -202,29 +221,53 @@
  */
 - (CGFloat)tableView:(CZWTableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CZWRowObj *rowObj = [self getObjectAtIndewPath:indexPath fromTableView:tableView];
-    CGFloat height = [self tableView:tableView checkCacheRowHeightForObject:rowObj indexPath:(NSIndexPath *)indexPath];
+    CGFloat height = [self tableView:tableView checkCacheRowHeightForObject:rowObj indexPath:indexPath];
     return height;
 }
 
 #pragma 以下的可以重写原生也可以重写自定义czw_开头的
 - (CGFloat)tableView:(CZWTableView *)tableView heightForHeaderInSection:(NSInteger)section{
     CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return [self czw_tableView:tableView heightForHeaderInSectionObj:secObj inSection:section];
+    CGFloat sectionHeaderHeight = [self tableView:tableView checkCacheSectionHeaderHeightForSection:secObj inSection:section];
+    return sectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(CZWTableView *)tableView heightForFooterInSection:(NSInteger)section{
     CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return [self czw_tableView:tableView heightForFooterInSectionObj:secObj inSection:section];
+    CGFloat sectionFooterHeight = [self tableView:tableView checkCacheSectionFooterHeightForSection:secObj inSection:section];
+    return sectionFooterHeight;
 }
 
 - (nullable UIView *)tableView:(CZWTableView *)tableView viewForHeaderInSection:(NSInteger)section{
     CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return [self czw_tableView:tableView viewForHeaderInSectionObj:secObj inSection:section];
+    Class sectionHeaderViewClass = [self checkSectionHeaderViewClassCache:tableView section:secObj];
+    NSString *sectionHeaderViewName = [NSString stringWithFormat:@"%s",class_getName(sectionHeaderViewClass)];
+    if ([sectionHeaderViewClass isSubclassOfClass:[CZWTableViewSectionHeader class]]) {
+        CZWTableViewSectionHeader *headerView = (CZWTableViewSectionHeader *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:sectionHeaderViewName inSection:section];
+        [headerView bindingShowData:secObj inSection:section delegate:self];
+        [self didDequeueReusableHeader:headerView];
+        return headerView;
+    } else {
+        NSParameterAssert(NO);
+        NSLog(@"cell Class isn't subclassOfClass CZWTableViewSectionHeader : %s",__FUNCTION__);
+        return nil;
+    }
 }
 
 - (nullable UIView *)tableView:(CZWTableView *)tableView viewForFooterInSection:(NSInteger)section{
     CZWSectionObj *secObj = [self getSectionObjAtIndex:section fromTableView:tableView];
-    return [self czw_tableView:tableView viewForFooterInSectionObj:secObj inSection:section];
+    Class sectionFooterViewClass = [self checkSectionFooterViewClassCache:tableView section:secObj];
+    NSString *sectionFooterViewName = [NSString stringWithFormat:@"%s",class_getName(sectionFooterViewClass)];
+    if ([sectionFooterViewClass isSubclassOfClass:[CZWTableViewSectionFooter class]]) {
+        CZWTableViewSectionFooter *footerView = (CZWTableViewSectionFooter *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:sectionFooterViewName inSection:section];
+        [footerView bindingShowData:secObj inSection:section delegate:self];
+        [self didDequeueReusableFooter:footerView];
+        return footerView;
+    } else {
+        NSParameterAssert(NO);
+        NSLog(@"cell Class isn't subclassOfClass CZWTableViewSectionFooter : %s",__FUNCTION__);
+        return nil;
+    }
 }
 
 - (void)tableView:(CZWTableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -340,7 +383,86 @@
     }
 }
 
+/**
+ *  section headerView Class cache
+ */
+- (Class)checkSectionHeaderViewClassCache:(CZWTableView *)tableView section:(CZWSectionObj *)secObj{
+    if (!secObj.sectionHeaderClass) {
+        secObj.sectionHeaderClass = [self tableView:tableView sectionHeaderForSection:secObj];
+    }
+    return secObj.sectionHeaderClass;
+}
 
+/**
+ *  Section headerHeight cache
+ */
+- (CGFloat)tableView:(CZWTableView *)tableView checkCacheSectionHeaderHeightForSection:(CZWSectionObj *)secObj inSection:(NSInteger)section{
+    if (secObj.headerHeight == CellNeedRecountHeight) {    //通过cell自己计算返回高度
+        Class headerClass = [self checkSectionHeaderViewClassCache:tableView section:secObj];
+        if (headerClass) {
+            if ([headerClass isSubclassOfClass:[CZWTableViewSectionHeader class]]) {
+                CGFloat headerHeight = [headerClass headerHeightForSection:secObj inSection:section];
+                [secObj setHeaderHeight:headerHeight];
+            }
+        } else {
+            [secObj setHeaderHeight:0];
+            return 0;
+        }
+    }
+    return secObj.headerHeight + secObj.priorityHeaderHeight;
+}
 
+/**
+ *  section footer Class cache
+ */
+- (Class)checkSectionFooterViewClassCache:(CZWTableView *)tableView section:(CZWSectionObj *)secObj{
+    if (!secObj.sectionFooterClass) {
+        secObj.sectionFooterClass = [self tableView:tableView sectionFooterForSection:secObj];
+    }
+    return secObj.sectionFooterClass;
+}
+
+/**
+ *  Section headerHeight cache
+ */
+- (CGFloat)tableView:(CZWTableView *)tableView checkCacheSectionFooterHeightForSection:(CZWSectionObj *)secObj inSection:(NSInteger)section{
+    if (secObj.footerHeight == CellNeedRecountHeight) {    //通过cell自己计算返回高度
+        Class footerClass= [self checkSectionFooterViewClassCache:tableView section:secObj];
+        if (footerClass) {
+            if ([footerClass isSubclassOfClass:[CZWTableViewSectionFooter class]]) {
+                CGFloat footerHeight = [footerClass footerHeightForSection:secObj inSection:section];
+                [secObj setFooterHeight:footerHeight];
+            }
+        } else {
+            [secObj setFooterHeight:0];
+            return 0;
+        }
+    }
+    return secObj.footerHeight + secObj.priorityFooterHeight;
+}
+
+#pragma mark - cell and view trigger back
+
+- (void)cell:(CZWTableViewCell *)cell didTriggerBySender:(id)sender{
+    CZWTableView *tableView = (CZWTableView *)[cell superTableView];
+    NSIndexPath *indexPath = [tableView indexPathForCell:cell];
+    CZWTableViewModel *model = [self getModelFromTableView:tableView];
+    CZWRowObj *rowObj = [model objectForRowAtIndexPath:indexPath];
+    [self czw_tableView:tableView rowObj:rowObj atIndexPath:indexPath cellDidTriggerBySender:sender];
+}
+
+- (void)headerView:(CZWTableViewSectionHeader *)headerView didTriggerBySender:(id)sender{
+    CZWTableView *tableView = (CZWTableView *)[headerView superTableView];
+    CZWTableViewModel *model = [self getModelFromTableView:tableView];
+    CZWSectionObj *secObj = [model sectionObjectAtIndex:headerView.section];
+    [self czw_tableView:tableView secObj:secObj inSection:headerView.section headerViewDidTriggerBySender:sender];
+}
+
+- (void)footerView:(CZWTableViewSectionFooter *)footView didTriggerBySender:(id)sender{
+    CZWTableView *tableView = (CZWTableView *)[footView superTableView];
+    CZWTableViewModel *model = [self getModelFromTableView:tableView];
+    CZWSectionObj *secObj = [model sectionObjectAtIndex:footView.section];
+    [self czw_tableView:tableView secObj:secObj inSection:footView.section footerViewDidTriggerBySender:sender];
+}
 
 @end

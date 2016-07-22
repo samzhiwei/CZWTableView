@@ -123,32 +123,41 @@
     }
 }
 
-//- (void)addModelMessageChannel:(NSString *)name{
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshUI:) name:name object:nil];
-//}
+- (void)registerSectionNibs:(NSArray <NSString*>*)nibNames{
+    for (NSString *nibName in nibNames) {
+        [self registerNib:[UINib nibWithNibName:nibName bundle:nil] forHeaderFooterViewReuseIdentifier:nibName];
+    }
+}
 
-//- (void)removeRelatedModel{
-//    _model = nil;
-//}
+- (void)registerSectionClasses:(NSArray <Class>*)classes{
+    for (Class sectionClass in classes) {
+        NSString *sectionClassStr = NSStringFromClass(sectionClass);
+        [self registerClass:sectionClass forHeaderFooterViewReuseIdentifier:sectionClassStr];
+    }
+}
+
 
 - (void)pastDelegate:(id<UITableViewDelegate>)delegate dataSource:(id<UITableViewDataSource>)dataSource{
     self.delegate = delegate;
     self.dataSource = dataSource;
 }
 
-//- (void)refreshUI:(NSNotification *)noti{
-//    if ([noti.userInfo.allKeys containsObject:@"indexPath"]) {
-//        NSIndexPath *indexPath = [noti.userInfo objectForKey:@"indexPath"];
-//        //[self beginUpdates];
-//        [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//        //[self endUpdates];
-//    } else if ([noti.userInfo.allKeys containsObject:@"section"]) {
-//        NSNumber *section = [noti.userInfo objectForKey:@"section"];
-//        [self reloadSections:[NSIndexSet indexSetWithIndex:[section integerValue]] withRowAnimation:UITableViewRowAnimationNone];
-//    }
-//    
-//}
-
+- (UITableViewHeaderFooterView *)dequeueReusableHeaderFooterViewWithIdentifier:(NSString *)identifier inSection:(NSInteger)section{
+    UITableViewHeaderFooterView *hfView = [self dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    if (hfView == nil) {
+        hfView = [[UITableViewHeaderFooterView alloc]initWithReuseIdentifier:identifier];
+    }
+    if ([hfView isKindOfClass:[CZWTableViewSectionHeader class]]) {
+        CZWTableViewSectionHeader *h = (CZWTableViewSectionHeader *)hfView;
+        h.section = section;
+    } else if ([hfView isKindOfClass:[CZWTableViewSectionFooter class]]) {
+        CZWTableViewSectionFooter *f = (CZWTableViewSectionFooter *)hfView;
+        f.section = section;
+    }
+    
+    //可能需要清空自身和子类某些参数再返回(方案待定)
+    return hfView;
+}
 
 
 

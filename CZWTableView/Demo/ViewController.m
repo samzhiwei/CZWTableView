@@ -13,9 +13,9 @@
 #import "CZWTeather.h"
 #import "CZWStudentCell.h"
 #import "CZWTeatherCell.h"
-#import "CZWSchoolCell.h"
+#import "CZWSchoolHeader.h"
 #define kkk @"kkk"
-@interface ViewController ()
+@interface ViewController () 
 @property (strong, nonatomic) CZWTableViewModel *firstModel;
 @property (strong, nonatomic) CZWTableViewModel *secondModel;
 @property (strong, nonatomic) CZWTableView *tableView;
@@ -59,6 +59,7 @@
     NSLog(@"start");
     NSArray *array = @[NSStringFromClass([CZWStudentCell class]),NSStringFromClass([CZWTeatherCell class])];
     self.tableView = [[CZWMapTableView alloc]initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain registerCellNibNames:array delegate:self dataSource:self];
+    [self.tableView registerSectionNibs:@[NSStringFromClass([CZWSchoolHeader class])]];
     self.tableView.tag = 1;
     [self.view addSubview:self.tableView];
     UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(100, 100, 50, 50)];
@@ -88,9 +89,32 @@
         return nil;
     }
 }
+
+- (Class)tableView:(CZWTableView *)tableView sectionHeaderForSection:(CZWSectionObj *)secObj{
+    if ([secObj isKindOfClass:[CZWSchool class]]) {
+        return [CZWSchoolHeader class];
+    } else {
+        return nil;
+    }
+}
+
 - (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj atIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
+
+/**
+ *  cell相应反馈
+ */
+- (void)czw_tableView:(CZWTableView *)tableView rowObj:(CZWRowObj *)rowObj atIndexPath:(NSIndexPath *)indexPath cellDidTriggerBySender:(id)sender{
+
+};
+- (void)czw_tableView:(CZWTableView *)tableView secObj:(CZWSectionObj *)secObj inSection:(NSInteger)section headerViewDidTriggerBySender:(id)sender{
+    secObj.open = !secObj.open;
+    [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
+};
+- (void)czw_tableView:(CZWTableView *)tableView secObj:(CZWSectionObj *)secObj inSection:(NSInteger)section  footerViewDidTriggerBySender:(id)sender{
+
+};
 
 
 - (void)click:(UIButton *)sender{

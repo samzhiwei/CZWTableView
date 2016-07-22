@@ -6,9 +6,9 @@
 //  Copyright © 2016年 Tianqu. All rights reserved.
 //
 
-#import "CZWTableViewCell.h"
+#import "CZWTableViewSectionHeader.h"
 
-@interface CZWSchoolCell : CZWTableViewCell 
+@interface CZWSchoolHeader : CZWTableViewSectionHeader
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (weak, nonatomic) IBOutlet UIButton *button;
 

@@ -19,7 +19,7 @@
 #import "CZWTableView.h"
 #import "CZWTableViewModel.h"
 
-@interface CZWTableViewController : CZWBaseViewController <UITableViewDataSource,UITableViewDelegate>
+@interface CZWTableViewController : CZWBaseViewController <UITableViewDataSource,UITableViewDelegate,CZWSectionHeaderDelegate,CZWSectionFooterDelegate,CZWCellDelegate>
 /**
  *  自动绑定tableView的delegate和dataSource
  */
@@ -43,6 +43,8 @@
  *   "obj类名后加Cell为Cell的类名" 的命名规则命名
  */
 - (Class)tableView:(CZWTableView *)tableView cellClassForObject:(CZWRowObj *)rowObj;
+- (Class)tableView:(CZWTableView *)tableView sectionHeaderForSection:(CZWSectionObj *)secObj;
+- (Class)tableView:(CZWTableView *)tableView sectionFooterForSection:(CZWSectionObj *)secObj;
 
 /**
  *  可以重写这些获得obj,也可以重写UITableViewDelegate的获得IndexPath
@@ -50,13 +52,24 @@
 //UITableViewDataSource
 - (BOOL)czw_tableView:(CZWTableView *)tableView canEditRowObj:(CZWRowObj *)obj;
 - (BOOL)czw_tableView:(CZWTableView *)tableView canMoveRowObj:(CZWRowObj *)obj;
+
+/**
+ *  已经设置好cell之后调用
+ */
+- (void)didDequeueReusableCell:(CZWTableViewCell *)cell;
+- (void)didDequeueReusableHeader:(CZWTableViewSectionHeader *)headerView;
+- (void)didDequeueReusableFooter:(CZWTableViewSectionFooter *)footerView;
 //UITableViewDelegate
 - (void)czw_tableView:(CZWTableView *)tableView didSelectRowObj:(CZWRowObj *)obj atIndexPath:(NSIndexPath *)indexPath;
 - (void)czw_tableView:(CZWTableView *)tableView didDeselectRowObj:(CZWRowObj *)rowObj atIndexPath:(NSIndexPath *)indexPath;
-- (CGFloat)czw_tableView:(CZWTableView *)tableView heightForHeaderInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section;
-- (CGFloat)czw_tableView:(CZWTableView *)tableView heightForFooterInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section;
-- (UIView *)czw_tableView:(CZWTableView *)tableView viewForHeaderInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section;
-- (UIView *)czw_tableView:(CZWTableView *)tableView viewForFooterInSectionObj:(CZWSectionObj *)secObj inSection:(NSInteger)section;
+
+/**
+ *  cell相应反馈
+ */
+- (void)czw_tableView:(CZWTableView *)tableView rowObj:(CZWRowObj *)rowObj atIndexPath:(NSIndexPath *)indexPath cellDidTriggerBySender:(id)sender;
+- (void)czw_tableView:(CZWTableView *)tableView secObj:(CZWSectionObj *)secObj inSection:(NSInteger)section headerViewDidTriggerBySender:(id)sender;
+- (void)czw_tableView:(CZWTableView *)tableView secObj:(CZWSectionObj *)secObj inSection:(NSInteger)section  footerViewDidTriggerBySender:(id)sender;
+
 
 //编辑操作
 - (void)czw_tableView:(CZWTableView *)tableView cellEditingStyleDidNoneObjAtIndexPath:(NSIndexPath *)indexPath;

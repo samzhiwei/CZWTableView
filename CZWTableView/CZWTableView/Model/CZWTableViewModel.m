@@ -35,9 +35,6 @@
     }
     _sectionCount = dataArray.count;
     _objectCount = count;
-    [dataArray enumerateObjectsUsingBlock:^(CZWSectionObj * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-    }];
 }
 
 - (NSUInteger)sectionCount{

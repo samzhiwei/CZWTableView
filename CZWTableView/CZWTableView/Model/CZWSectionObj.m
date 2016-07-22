@@ -7,9 +7,10 @@
 //
 
 #import "CZWSectionObj.h"
-
 @implementation CZWSectionObj
 @synthesize rowArrayCount = _rowArrayCount;
+@synthesize headerHeight = _headerHeight;
+@synthesize footerHeight = _footerHeight;
 - (instancetype)init{
     self = [super init];
     if (self) {
@@ -17,6 +18,11 @@
         self.rowArray = [[NSMutableArray alloc]init];
         self.titleForFooter = nil;
         self.titleForHeader = nil;
+        self.open = NO;
+        _headerHeight = CellNeedRecountHeight;
+        _footerHeight = CellNeedRecountHeight;
+        _priorityHeaderHeight = 0.0;
+        _priorityFooterHeight = 0.0;
     }
     return self;
 }
@@ -31,6 +37,14 @@
 
 - (NSUInteger)rowArrayCount{
     return self.rowArray.count;
+}
+
+- (void)setHeaderHeight:(CGFloat)headerHeight{
+    _headerHeight = headerHeight;
+}
+
+- (void)setFooterHeight:(CGFloat)footerHeight{
+    _footerHeight = footerHeight;
 }
 
 @end

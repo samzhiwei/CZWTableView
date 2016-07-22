@@ -13,7 +13,8 @@
 + (CGFloat)rowHeightForObject:(id)rowObj atIndexPath:(NSIndexPath *)indexPath{
     return 66;
 }
-- (UITableViewCell *)bindingShowData:(id)rowObj atIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)bindingShowData:(id)rowObj atIndexPath:(NSIndexPath *)indexPath delegate:(id<CZWCellDelegate>)delegate{
+    self.delegate = delegate;
     NSString *name = [rowObj valueForKey:@"name"];
     self.image.image = [UIImage imageNamed:name];
     self.label.text = [[rowObj valueForKey:@"workNumber"] stringValue];
